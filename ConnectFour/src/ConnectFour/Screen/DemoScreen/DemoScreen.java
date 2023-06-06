@@ -60,16 +60,23 @@ public class DemoScreen extends OriginScreen {
 		ConnectFour.getStage().setScene(scene);
 	}
 	
+	
+	//Textインスタンスがクリックされたときに発生するイベントの定義
 	class ClickButton implements EventHandler<MouseEvent> {
+		//何番目のボタンかの情報を保持する変数
 		private int num;
 		
+		//コンストラクタ
 		public ClickButton(int num) {
 			this.num = num;
 		}
 
+		//イベント発生時の処理
 		@Override
 		public void handle(MouseEvent e) {
+			//TextFieldに表示する文字列の作成
 			String str=String.valueOf(num)+"番目のボタンが押された。";
+			//TextFieldの文字列の変更処理
 			tf.setText(str);
 		}
 	}
