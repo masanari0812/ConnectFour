@@ -27,8 +27,9 @@ public class ClientManager extends Thread {
 			handShakeSocket.close();
 			DemoScreen.changeString(localhost.getHostAddress());
 			this.socket = new Socket(localhost, 8782);
-			if (socket.isConnected())
+			if (socket.isConnected()) {
 				System.out.println("OK!!");
+			}	
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
