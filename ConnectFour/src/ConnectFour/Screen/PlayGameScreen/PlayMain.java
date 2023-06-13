@@ -76,21 +76,24 @@ public class PlayMain extends Application {
 				Circle space = (Circle) node;
 				if (space.getFill() == Color.GREY) {
 					if (e.isPrimaryButtonDown()) {
-						space.setFill(PlayerAffiliation.PLAYER1.getColor()); // 別のクラスファイルで色を指定?
-						//gm.putOnspace();
+						space.setFill(PlayerAffiliation.PLAYER1.getColor()); // enum(列挙型)を利用してマスを染める．
+						//gm.putOnspace(PlayerAffiliation.PLAYER1, x);
 					} else if (e.isSecondaryButtonDown()) {
-						space.setFill(PlayerAffiliation.PLAYER2.getColor());
-						//gm.putOnspace();
+						space.setFill(PlayerAffiliation.PLAYER2.getColor()); // enum(列挙型)を利用してマスを染める．
+						//gm.putOnspace(PlayerAffiliation.PLAYER2, x);
 					}
 					break;
 				}
 			}
 		}
 	}
+	
 	/*
+	// スキルの効果を反映させる処理を追加する．
 	class ClickBottunEventHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
 			// スキルの効果を反映させる処理を書く.
+			
 		}
 	} */
 }
