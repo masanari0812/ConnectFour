@@ -85,3 +85,7 @@ public class ConnectFourDemo extends Application {
 	}
 
 }
+
+// mian method
+// start method
+// EventHandler
