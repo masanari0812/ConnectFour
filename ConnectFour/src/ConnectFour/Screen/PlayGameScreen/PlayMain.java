@@ -1,3 +1,5 @@
+package ConnectFour.Screen.PlayGameScreen;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -59,7 +61,7 @@ public class PlayMain extends Application {
 		stage.show();
 	}
 	
-	// マウスでマスをクリックしたら赤orオレンジに染まる処理を追加する.
+	// マウスでマスをクリックしたら赤or黄色に染まる処理を追加する.
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
 		private int x;
 		
@@ -74,10 +76,10 @@ public class PlayMain extends Application {
 				Circle space = (Circle) node;
 				if (space.getFill() == Color.GREY) {
 					if (e.isPrimaryButtonDown()) {
-						//space.setFill(null); // 別のクラスファイルで色を指定?
+						space.setFill(PlayerAffiliation.PLAYER1.getColor()); // 別のクラスファイルで色を指定?
 						//gm.putOnspace();
 					} else if (e.isSecondaryButtonDown()) {
-						//space.setFill();
+						space.setFill(PlayerAffiliation.PLAYER2.getColor());
 						//gm.putOnspace();
 					}
 					break;
