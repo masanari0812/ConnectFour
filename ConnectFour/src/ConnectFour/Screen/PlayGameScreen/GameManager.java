@@ -39,4 +39,96 @@ public class GameManager {
 	public class activateSkill implements EventHandler<BottunEvent> {
 		
 	} */
+	
+	
+	// 盤面の把握
+	public int countColumnSpace(PlayerAffiliation team) {
+		int count, point = 0;
+		for (int x = 0; x < column; x++) {
+			count = 0;
+			for (int y = 0; y < row; y++) {
+				if (getSpace(x, y).equals(team)) {
+					count++;
+				}
+				else {
+					count = 0;
+				}
+				if (count >= 4) {
+					count = 0;
+					point++;
+				}
+			}
+		}
+		return point;
+	}
+	
+	public int countRowSpace(PlayerAffiliation team) {
+		int count, point = 0;
+		for (int y = 0; y < row; y++) {
+			count = 0;
+			for (int x = 0; x < column; x++) {
+				if (getSpace(x, y).equals(team)) {
+					count++;
+				}
+				else {
+					count = 0;
+				}
+				if (count >= 4) {
+					count = 0;
+					point++;
+				}
+			}
+		}
+		return point;
+	}
+	
+	public int countRightSlashSpace(PlayerAffiliation team) {
+		int count, point = 0;
+		for (int x = 0; x < column; x++) {
+			count = 0;
+			for (int y = 0; y < row; y++) {
+				if (getSpace(x+y, y).equals(team)) {
+					count++;
+				}
+				else {
+					count = 0;
+				}
+				if (count >= 4) {
+					count = 0;
+					point++;
+				}
+			}
+		}
+		return point;
+	}
+	
+	public int countLeftSlashSpace(PlayerAffiliation team) {
+		int count, point = 0;
+		for (int x = 0; x < column; x++) {
+			count = 0;
+			for (int y = 0; y < row; y++) {
+				if (getSpace(column-x-y-1, y).equals(team)) {
+					count++;
+				}
+				else {
+					count = 0;
+				}
+				if (count >= 4) {
+					count = 0;
+					point++;
+				}
+			}
+		}
+		return point;
+	}
+	
+	public boolean breakSpace(int x, int y) {
+		if (getSpace(x, y).equals(PlayerAffiliation.NONE)) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+		
 }
