@@ -18,24 +18,7 @@ public class SelectModeScreen extends OriginScreen{
 	
 	private static TextField tf;
 
-<<<<<<< HEAD
-	public void start(Stage stage) throws Exception {
-		txtField = new TextField("テキスト");
-		button = new Button("確定");
-	    BorderPane bp = new BorderPane();
-	    bp.setTop(txtField);
-	    bp.setCenter(button);
-	    button.setOnAction(new MousePressedHandler());
-	    
-	    //継承元のOriginScreenにあるscene変数に格納
-	    this.scene = new Scene(bp,300,200);
-	}
-	
-	public class MousePressedHandler implements EventHandler<ActionEvent>{
 
-		@Override
-		public void handle(ActionEvent arg0) {	
-=======
 	public SelectModeScreen() {
 		//複数のNodeを盾に結合できるVBoxを生成
 		VBox vb = new VBox();
@@ -51,7 +34,6 @@ public class SelectModeScreen extends OriginScreen{
 			text.setOnMouseClicked(new ClickButton(i));
 			//VBoxに作成したNodeを追加(今回はTextインスタンス)
 			vb.getChildren().add(text);
->>>>>>> e6cb7844a7d9f990bb2aaa6e158725245565c0cb
 		}
 		//メンバ変数tfにTextFieldインスタンスを生成し代入
 
@@ -80,13 +62,11 @@ public class SelectModeScreen extends OriginScreen{
 	//(今回はデモなのでスクリーン転換ではなくスクリーン設定のみになっている)
 	@Override
 	public void changeNextScreen() {
-<<<<<<< HEAD
-=======
 
 		//ConnctFour.getStage()で起動中のStageを持ってこれる
 		//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる)
 		ConnectFour.getStage().setScene(scene);
->>>>>>> e6cb7844a7d9f990bb2aaa6e158725245565c0cb
+
 	}
 
 	//Textインスタンスがクリックされたときに発生するイベントの定義
