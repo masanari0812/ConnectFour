@@ -3,7 +3,7 @@ package ConnectFour.Screen.PlayGameScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-import ConnectFour.ConnectFour;
+import ConnectFour.Screen.OriginScreen;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,12 +14,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-public class GameManager {
+public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
 	private HBox hb;
 
-	public GameManager(int column, int row) {
+	public PlayGameScreen(int column, int row) {
 		boardState = new ArrayList<>();
 		for (int x = 0; x < column; x++) {
 			boardState.add(new ArrayList<>());
@@ -81,8 +81,7 @@ public class GameManager {
 		r.setFill(Color.GREY);
 		sideBar.getChildren().addAll(r, bt);
 		hb.getChildren().add(sideBar);
-		Scene sc = new Scene(hb);
-		ConnectFour.getStage().setScene(sc);
+		scene = new Scene(hb);
 	}
 
 	public int getFirstNoneSpace(int x) {
@@ -197,5 +196,11 @@ public class GameManager {
 			System.out.println(String.valueOf(x) + " " + String.valueOf(y));
 
 		}
+	}
+
+	@Override
+	public void changeNextScreen() {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 }

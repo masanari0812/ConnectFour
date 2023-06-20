@@ -1,6 +1,5 @@
 package ConnectFour.Screen.SelectModeScreen;
 
-import ConnectFour.ConnectFour;
 import ConnectFour.Communication.ClientManager;
 import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
@@ -62,11 +61,11 @@ public class SelectModeScreen extends OriginScreen{
 	//(今回はデモなのでスクリーン転換ではなくスクリーン設定のみになっている)
 	@Override
 	public void changeNextScreen() {
-
+		/*
 		//ConnctFour.getStage()で起動中のStageを持ってこれる
 		//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる)
 		ConnectFour.getStage().setScene(scene);
-
+		*/
 	}
 
 	//Textインスタンスがクリックされたときに発生するイベントの定義
