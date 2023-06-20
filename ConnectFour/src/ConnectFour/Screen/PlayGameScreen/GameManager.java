@@ -69,9 +69,9 @@ public class GameManager {
 				//for (int y = 0; y < row; y++) {
 				Circle space = new Circle(40, 50, 50); // space:マス radius:30
 				space.setFill(getSpace(x, y).getColor());
-				space.setOnMousePressed(new ClickBoardEventHandler(x, y));
 				vb.getChildren().add(space);
 			}
+			vb.setOnMousePressed(new ClickBoardEventHandler(x));
 		}
 
 		VBox sideBar = new VBox();
