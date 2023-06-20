@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 
 public class ResultScreen extends OriginScreen {
@@ -18,13 +17,13 @@ public class ResultScreen extends OriginScreen {
 	
 	private static TextField tf;
 
-		public void start(Stage stage) throws Exception {
+		public ResultScreen(){
 			button = new Button("続ける");
 			button1 = new Button("モード選択");
 		    BorderPane bp = new BorderPane();
 		    bp.setLeft(button);
 		    bp.setRight(button1);
-		    button.setOnAction(new MousePressedHandler());
+		    //button.setOnAction(new MousePressedHandler());
 		    
 		    //継承元のOriginScreenにあるscene変数に格納
 		    this.scene = new Scene(bp,300,200);
