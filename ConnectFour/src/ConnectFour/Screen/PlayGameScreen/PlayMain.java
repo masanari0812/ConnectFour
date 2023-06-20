@@ -88,12 +88,18 @@ public class PlayMain extends Application {
 		}
 	}
 	
-	/*
+	
 	// スキルの効果を反映させる処理を追加する．
 	class ClickBottunEventHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
 			// スキルの効果を反映させる処理を書く.
+			private int x;
+			
+			public ClickBottunEventHandler(int x) {
+				this.x = x;
+			}
+			
 			
 		}
-	} */
+	}
 }

@@ -2,7 +2,7 @@ package ConnectFour.Screen.PlayGameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
-// improt javafx.event.EventHandler;
+//import javafx.event.EventHandler;
 
 public class GameManager {
 	private List<List<PlayerAffiliation>> boardState;
