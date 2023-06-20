@@ -23,23 +23,21 @@ public class SelectModeScreen extends OriginScreen{
 	    bp.setTop(txtField);
 	    bp.setCenter(button);
 	    button.setOnAction(new MousePressedHandler());
+	    
+	    //継承元のOriginScreenにあるscene変数に格納
 	    this.scene = new Scene(bp,300,200);
 	}
 	
 	public class MousePressedHandler implements EventHandler<ActionEvent>{
 
 		@Override
-		public void handle(ActionEvent arg0) {
-
-			
+		public void handle(ActionEvent arg0) {	
 		}
 		
 	}
 
 	@Override
 	public void changeNextScreen() {
-		// TODO 自動生成されたメソッド・スタブ
-		
 	}
 }
 
