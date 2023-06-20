@@ -12,7 +12,8 @@ public class ResultScreen extends OriginScreen {
 	private Button button;
 
 	public ResultScreen() {
-	
+		button
+		tf
 	}
 }
 
