@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 
@@ -21,7 +21,7 @@ public class SelectBoardScreen extends OriginScreen {
 
 	public SelectBoardScreen() {
 		//複数のNodeを横に結合できるVBoxを生成
-		HBox vb = new HBox();
+		VBox vb = new VBox();
 		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
 		vb.setSpacing(20);
 		//1から5までのテキストを作りClickButtonイベントを設定する。
