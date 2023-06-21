@@ -21,6 +21,7 @@ public class ResultScreen extends OriginScreen {
 			button = new Button("続ける");
 			button1 = new Button("モード選択");
 			button.setPrefWidth(50);
+			button.setPrefHeight(50);
 		    BorderPane bp = new BorderPane();
 		    bp.setLeft(button);
 		    bp.setRight(button1);
