@@ -21,7 +21,7 @@ public class SelectModeScreen extends OriginScreen{
 		//複数のNodeを盾に結合できるVBoxを生成
 		VBox vb = new VBox();
 		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
-		vb.fillWidthProperty();
+		vb.setFillWidth(true);
 		vb.setSpacing(20);
 		//1から5までのテキストを作りClickButtonイベントを設定する。
 		for (int i = 1; i <= 2; i++) {
