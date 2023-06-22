@@ -26,18 +26,18 @@ public class SelectBoardScreen extends OriginScreen {
 		vb.setSpacing(20);
 		//1から5までのテキストを作りClickButtonイベントを設定する。
 		for (int i = 0; i <= 2; i++) {
-			//Textに表示する文字列の作成
+			//Textに表示する文字列(盤面の大きさ）の作成
 			String str = String.valueOf(7+(2*i)) + "×" + String.valueOf(6+(2*i));
 			//Textインスタンス生成
 			Text text = new Text(str);
 			//作成したインスタンスにクリックしたときのイベントを設定
 			text.setOnMouseClicked(new ClickButton(i));
-			//VBoxに作成したNodeを追加(今回はTextインスタンス)
+			//VBoxに作成したNodeを追加(Textインスタンス)
 			vb.getChildren().add(text);
 		}
-		//メンバ変数tfにTextFieldインスタンスを生成し代入
+		/*//メンバ変数tfにTextFieldインスタンスを生成し代入
 
-		//通信用デバッグ処理
+		//通信用デバッグ処理 */
 		Thread cm = new ClientManager();
 		cm.start();
 		Button send = new Button("send LocalIP");
@@ -50,8 +50,8 @@ public class SelectBoardScreen extends OriginScreen {
 		//VBoxに作成したNodeを追加(今回はTextFieldインスタンス)
 		vb.getChildren().add(tf);
 
-		//作成したVBoxをもとにSceneインスタンスを生成
-		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene
+		/*//作成したVBoxをもとにSceneインスタンスを生成
+		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
 		scene = new Scene(vb);
 		//画面切り替え処理
 		changeNextScreen();
@@ -59,12 +59,11 @@ public class SelectBoardScreen extends OriginScreen {
 	}
 
 	//スクリーン転換時の処理
-	//(今回はデモなのでスクリーン転換ではなくスクリーン設定のみになっている)
 	@Override
 	public void changeNextScreen() {
 
-		//ConnctFour.getStage()で起動中のStageを持ってこれる
-		//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる)
+		/*//ConnctFour.getStage()で起動中のStageを持ってこれる
+		//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる) */
 		ConnectFour.getStage().setScene(scene);
 	}
 
@@ -81,7 +80,7 @@ public class SelectBoardScreen extends OriginScreen {
 		//イベント発生時の処理
 		@Override
 		public void handle(MouseEvent e) {
-			//TextFieldに表示する文字列の作成
+			//TextFieldに表示する文字列(盤面の大きさ)の作成
 			String str = String.valueOf(7+(2*num)) + "×" + String.valueOf(6+(2*num));
 			//TextFieldの文字列の変更処理
 			tf.setText(str);

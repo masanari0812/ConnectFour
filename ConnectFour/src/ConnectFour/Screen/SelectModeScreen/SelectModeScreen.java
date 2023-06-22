@@ -11,36 +11,44 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-
 public class SelectModeScreen extends OriginScreen{
 	
 	private static TextField tf;
+	private Button button;
 
 
 	public SelectModeScreen() {
 		//複数のNodeを盾に結合できるVBoxを生成
 		VBox vb = new VBox();
 		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
-		vb.setFillWidth(true);
+
 		vb.setSpacing(20);
 		//1から5までのテキストを作りClickButtonイベントを設定する。
 		for (int i = 1; i <= 2; i++) {
-			//Textに表示する文字列の作成
-			String str = String.valueOf(i) + "人で対戦";
+			/*//Textに表示する文字列の作成
+			
 			//Textインスタンス生成
-			Text text = new Text(str);
+			
 			//作成したインスタンスにクリックしたときのイベントを設定
-			text.setOnMouseClicked(new ClickButton(i));
-			//VBoxに作成したNodeを追加(今回はTextインスタンス)
+			
+			//VBoxに作成したNodeを追加(Textインスタンス) */
+			String str = String.valueOf(i) + "人で対戦";
+			Text text = new Text(str);
+			/* Button button = new Button(str);
+			//button.setPrefSize(30,20); */
 			vb.getChildren().add(text);
+			
+			//Text text = new Text(button);
+			text.setOnMouseClicked(new ClickButton(i));
 		}
+		
 		//メンバ変数tfにTextFieldインスタンスを生成し代入
 
 		//通信用デバッグ処理
 		Thread cm = new ClientManager();
 		cm.start();
 		Button send = new Button("send LocalIP");
-		send.setOnMouseClicked(new sendLocalIP());
+		send.setOnMouseClicked(new sendLocalIP());;
 		vb.getChildren().add(send);
 		//通信用デバッグ処理終了
 
@@ -49,8 +57,8 @@ public class SelectModeScreen extends OriginScreen{
 		//VBoxに作成したNodeを追加(今回はTextFieldインスタンス)
 		vb.getChildren().add(tf);
 
-		//作成したVBoxをもとにSceneインスタンスを生成
-		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene
+		/*//作成したVBoxをもとにSceneインスタンスを生成
+		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
 		scene = new Scene(vb);
 		//画面切り替え処理
 		changeNextScreen();
@@ -58,7 +66,6 @@ public class SelectModeScreen extends OriginScreen{
 	}
 
 	//スクリーン転換時の処理
-	//(今回はデモなのでスクリーン転換ではなくスクリーン設定のみになっている)
 	@Override
 	public void changeNextScreen() {
 		/*
@@ -104,8 +111,6 @@ public class SelectModeScreen extends OriginScreen{
 
 }
 
-	
-	
 
 
 
