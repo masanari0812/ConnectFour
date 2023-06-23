@@ -70,23 +70,26 @@ public class PlayGameScreen extends OriginScreen {
 	}
 
 	
-	// スキルの処理
+	// スキルの処理(青色のマスで層を作る)
 	public void activateSkill(List<List<PlayerAffiliation>> boardState) {
-		used_skill = 1;
-		List<List<PlayerAffiliation>> preBoardState = boardState;				// スキル発動前のマスの情報を預けて置くための List
-		for (int x = 0; x < column; x++) {										// 2重ループでスキルの効果を実現
-			for (int y = 0; y < row; y++) {										// 列ごとにマスを更新する
-				boardState.get(x).remove(y);
-				boardState.get(x).add(y, preBoardState.get(x).get(row-1-y));
-			}
-		}
+		used_skill += 1;
+		int count;
 		
+		for (int x = 0; x < column; x++) {
+			count = 0;
+			for (int y = 0; y < row; y++) {
+				if (count == 0 && boardState.get(x).get(row-1-y) == PlayerAffiliation.NONE) {
+					setSpace(PlayerAffiliation.BLOCK, x, row-1-y);
+					count += 1;
+				}
+			}
+		}		
 		reloadBoard();
 	}
 	
 	
 	// 盤面の生成・更新，イベントハンドラの登録(マウス，ボタン)
-	// used_skill が 0 の場合，ボタンは生成しない
+	// used_skill が 2 の場合，ボタンは生成しない
 	public void reloadBoard() {
 		HBox hb = new HBox();
 		hb.setSpacing(5);
@@ -104,7 +107,7 @@ public class PlayGameScreen extends OriginScreen {
 		}
 
 		VBox sideBar = new VBox();
-		if (used_skill == 0) {
+		if (used_skill != 2) {
 			Button bt = new Button("Skill");
 			bt.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			Rectangle r = new Rectangle(40, 50, 120, 360);
