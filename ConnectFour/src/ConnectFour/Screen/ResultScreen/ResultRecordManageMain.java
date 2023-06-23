@@ -55,7 +55,7 @@ public class ResultRecordManageMain {
          br.close();
          pw.close();
       } catch (IOException e) {
-         e.printStackTrace(null);
+         e.printStackTrace();
       }
    }
 	

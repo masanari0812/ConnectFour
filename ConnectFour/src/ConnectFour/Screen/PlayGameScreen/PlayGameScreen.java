@@ -66,6 +66,7 @@ public class PlayGameScreen extends OriginScreen {
 	public void setSpace(PlayerAffiliation player, int x) {
 		if (player == PlayerAffiliation.NONE)
 			return;
+		boardState.get(0).add(PlayerAffiliation.PLAYER1);
 		boardState.get(x).add(player);
 		reloadBoard();
 	}
