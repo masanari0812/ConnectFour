@@ -18,11 +18,12 @@ import javafx.scene.shape.Rectangle;
 public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
-	private int used_skill = 0;		// スキルを使用したのかを判断する変数
+	private int used_skill = 0;		// スキルを使用した回数を判断する変数
 	//private HBox hb;
 	
-	// columnとrowをコンストラクタで取得
 	
+	
+	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(int column, int row) {
 		boardState = new ArrayList<>();
 		for (int x = 0; x < column; x++) {		// 列の数だけArrayListを追加
