@@ -99,8 +99,7 @@ public class PlayGameScreen extends OriginScreen {
 			hb.getChildren().add(vb = new VBox());
 			vb.setSpacing(5);
 			for (int y = row - 1; y >= 0; y--) {
-				//for (int y = 0; y < row; y++) {
-				Circle space = new Circle(40, 50, 50); // space:マス radius:30
+				Circle space = new Circle(40, 50, 50); 			// space: マス
 				space.setFill(getSpace(x, y).getColor());
 				vb.getChildren().add(space);
 			}
