@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 public class ConnectFour extends Application {
 	private static Stage stage;
-	private static PlayGameScreen gm;
 
 	public static void main(String[] args) {
 		launch(args);

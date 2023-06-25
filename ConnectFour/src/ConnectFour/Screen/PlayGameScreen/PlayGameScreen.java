@@ -3,6 +3,7 @@ package ConnectFour.Screen.PlayGameScreen;
 import java.util.ArrayList;
 import java.util.List;
 
+import ConnectFour.ConnectFour;
 import ConnectFour.Screen.OriginScreen;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -66,8 +67,8 @@ public class PlayGameScreen extends OriginScreen {
 	public void setSpace(PlayerAffiliation player, int x) {
 		if (player == PlayerAffiliation.NONE)
 			return;
-		boardState.get(0).add(PlayerAffiliation.PLAYER1);
 		boardState.get(x).add(player);
+		System.out.println(String.valueOf(x) + " " + String.valueOf(boardState.get(x).size()));
 		reloadBoard();
 	}
 
@@ -122,7 +123,8 @@ public class PlayGameScreen extends OriginScreen {
 			sideBar.getChildren().add(r);
 		}
 		hb.getChildren().add(sideBar);
-		scene = new Scene(hb);
+		Scene sc=new Scene(hb);
+		ConnectFour.setScene(sc);
 	}
 
 	
