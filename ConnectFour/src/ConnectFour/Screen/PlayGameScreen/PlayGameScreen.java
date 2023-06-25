@@ -115,7 +115,7 @@ public class PlayGameScreen extends OriginScreen {
 			Rectangle r = new Rectangle(40, 50, 120, 360);
 			r.setFill(Color.GREY);
 			sideBar.getChildren().addAll(r, bt);
-			bt.setOnAction(new ClickBottunEventHandler(boardState));
+			bt.setOnAction(new ClickButtonEventHandler(boardState));
 		}
 		else {
 			Rectangle r = new Rectangle(40, 50, 120, 360);
@@ -255,11 +255,11 @@ public class PlayGameScreen extends OriginScreen {
 
 	
 	// Skillボタンをクリックしたらスキルの効果を反映させる処理
-	class ClickBottunEventHandler implements EventHandler<ActionEvent> {
+	class ClickButtonEventHandler implements EventHandler<ActionEvent> {
 		private List<List<PlayerAffiliation>> boardState;
 		
 		
-		public ClickBottunEventHandler(List<List<PlayerAffiliation>> boardState) {		// 盤面の情報を受け取る
+		public ClickButtonEventHandler(List<List<PlayerAffiliation>> boardState) {		// 盤面の情報を受け取る
 			this.boardState = boardState;
 		}
 		
