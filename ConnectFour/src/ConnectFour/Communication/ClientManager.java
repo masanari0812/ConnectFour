@@ -29,7 +29,7 @@ public class ClientManager extends Thread {
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
 				System.out.println("OK!!");
-			}	
+			}
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();

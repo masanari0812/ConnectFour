@@ -1,104 +1,97 @@
 package ConnectFour.Screen.SelectBoardScreen;
 
-import ConnectFour.ConnectFour;
-import ConnectFour.Communication.ClientManager;
-import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-
-
-
 public class SelectBoardScreen extends OriginScreen {
-	
-	private static TextField tf;
+	private boolean multi;
+	private TextField columnTF;
+	private TextField rowTF;
 
-	public SelectBoardScreen() {
+	public SelectBoardScreen(boolean multi) {
+		this.multi = multi;
 		//複数のNodeを横に結合できるVBoxを生成
 		VBox vb = new VBox();
 		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
+		int column, row;
 		vb.setSpacing(20);
 		//1から5までのテキストを作りClickButtonイベントを設定する。
-		for (int i = 0; i <= 2; i++) {
+		for (int i = 1; i <= 3; i++) {
 			//Textに表示する文字列(盤面の大きさ）の作成
-			String str = String.valueOf(7+(2*i)) + "×" + String.valueOf(6+(2*i));
+			switch (i) {
+			case 1:
+				column = 7;
+				row = 6;
+				break;
+			case 2:
+				column = 9;
+				row = 7;
+				break;
+			case 3:
+				column = 12;
+				row = 6;
+				break;
+			default:
+				column = -1;
+				row = -1;
+			}
 			//Textインスタンス生成
-			Text text = new Text(str);
+			Button bt = new Button(String.valueOf(column) + "×" + String.valueOf(row));
 			//作成したインスタンスにクリックしたときのイベントを設定
-			text.setOnMouseClicked(new ClickButton(i));
+			bt.setOnMouseClicked(new ClickButton(column, row));
 			//VBoxに作成したNodeを追加(Textインスタンス)
-			vb.getChildren().add(text);
+			vb.getChildren().add(bt);
 		}
 		/*//メンバ変数tfにTextFieldインスタンスを生成し代入
-
-		//通信用デバッグ処理 */
-		Thread cm = new ClientManager();
-		cm.start();
-		Button send = new Button("send LocalIP");
-		send.setOnMouseClicked(new sendLocalIP());
-		vb.getChildren().add(send);
-		//通信用デバッグ処理終了
-
-		SelectBoardScreen.tf = new TextField();
-
+		
+		tf = new TextField();
+		
 		//VBoxに作成したNodeを追加(今回はTextFieldインスタンス)
 		vb.getChildren().add(tf);
-
-		/*//作成したVBoxをもとにSceneインスタンスを生成
+		
+		
+		/*作成したVBoxをもとにSceneインスタンスを生成
 		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
+
+		HBox size = new HBox();
+		this.columnTF = new TextField();
+		this.rowTF = new TextField();
+		Text midText = new Text("×");
+		size.getChildren().addAll(columnTF, midText, rowTF);
+		Button start = new Button("Start");
+		start.setOnMousePressed(null);
+		vb.getChildren().addAll(size,start);
 		scene = new Scene(vb);
-		//画面切り替え処理
-		changeNextScreen();
 
-	}
-
-	//スクリーン転換時の処理
-	@Override
-	public void changeNextScreen() {
-
-		/*//ConnctFour.getStage()で起動中のStageを持ってこれる
-		//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる) */
-		ConnectFour.getStage().setScene(scene);
 	}
 
 	//Textインスタンスがクリックされたときに発生するイベントの定義
 	class ClickButton implements EventHandler<MouseEvent> {
 		//何番目のボタンかの情報を保持する変数
-		private int num;
+		private int column;
+		private int row;
 
 		//コンストラクタ
-		public ClickButton(int num) {
-			this.num = num;
+		public ClickButton(int column, int row) {
+			this.column = column;
+			this.row = row;
 		}
 
 		//イベント発生時の処理
 		@Override
 		public void handle(MouseEvent e) {
 			//TextFieldに表示する文字列(盤面の大きさ)の作成
-			String str = String.valueOf(7+(2*num)) + "×" + String.valueOf(6+(2*num));
 			//TextFieldの文字列の変更処理
-			tf.setText(str);
+			columnTF.setText(String.valueOf(column));
+			rowTF.setText(String.valueOf(row));
 		}
 	}
-
-	//通信用デバッグ
-	public static void changeString(String str) {
-		tf.setText(str);
-	}
-
-	class sendLocalIP implements EventHandler<MouseEvent> {
-		@Override
-		public void handle(MouseEvent arg0) {
-			Thread sm = new ServerManager();
-			sm.start();
-		}
-	}
-	//通信用デバッグ処理終了
 
 }

@@ -20,6 +20,8 @@ public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
 	private int used_skill = 0;		// スキルを使用した回数を判断する変数
+	private InputStream
+
 	//private HBox hb;
 	
 	
@@ -123,8 +125,8 @@ public class PlayGameScreen extends OriginScreen {
 			sideBar.getChildren().add(r);
 		}
 		hb.getChildren().add(sideBar);
-		Scene sc=new Scene(hb);
-		ConnectFour.setScene(sc);
+		this.scene=new Scene(hb);
+		ConnectFour.getStage().setScene(scene);
 	}
 
 	

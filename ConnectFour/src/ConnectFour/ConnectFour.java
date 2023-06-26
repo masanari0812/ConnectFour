@@ -77,13 +77,13 @@ public class ConnectFour extends Application {
 				setScene(rs.getScene());
 				break;
 			case 4:
-				SelectBoardScreen sbs = new SelectBoardScreen();
+				SelectBoardScreen sbs = new SelectBoardScreen(false);
 				setScene(sbs.getScene());
 				break;
 			case 5:
 
 				SelectModeScreen sms = new SelectModeScreen();
-				setScene(sms.getScene());
+				ConnectFour.getStage().setScene(sms.getScene());
 				break;
 			}
 		}
