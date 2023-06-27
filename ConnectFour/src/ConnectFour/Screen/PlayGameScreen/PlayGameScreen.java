@@ -17,11 +17,13 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
@@ -35,22 +37,28 @@ public class PlayGameScreen extends OriginScreen {
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
 		if (online) {
+			Button stopBT=new Button("Stop Matching");
+			Text text = new Text("Matching now");
+			BorderPane bp = new BorderPane();
+			bp.setCenter(text);
+			bp.setBottom(stopBT);
+			ConnectFour.getStage().setScene(new Scene(bp, 400, 300));
 			ServerManager sm = new ServerManager(this);
 			sm.start();
-			try {
-				Thread.sleep(3000);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+			while (ois == null || oos == null)
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			try {
 				if (host) {
 					oos.writeObject(new CommunicationObject("Player1", column, row));
 					oos.flush();
 				} else {
-					CommunicationObject size=(CommunicationObject)ois.readObject();
-					column=size.getX();
-					row=size.getY();
+					CommunicationObject size = (CommunicationObject) ois.readObject();
+					column = size.getX();
+					row = size.getY();
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
