@@ -56,17 +56,17 @@ public class SelectModeScreen extends OriginScreen{
 	//Textインスタンスがクリックされたときに発生するイベントの定義
 	class ClickButton implements EventHandler<MouseEvent> {
 		//何番目のボタンかの情報を保持する変数
-		private boolean multi;
+		private boolean online;
 
 		//コンストラクタ
 		public ClickButton(boolean multi) {
-			this.multi=multi;
+			this.online=multi;
 		}
 
 		//イベント発生時の処理
 		@Override
 		public void handle(MouseEvent e) {
-			changeNextScreen(new SelectBoardScreen(multi));
+			changeNextScreen(new SelectBoardScreen(online));
 				
 		}
 	}

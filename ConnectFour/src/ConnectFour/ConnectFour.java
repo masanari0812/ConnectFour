@@ -69,7 +69,7 @@ public class ConnectFour extends Application {
 				setScene(ds.getScene());
 				break;
 			case 2:
-				PlayGameScreen pgs = new PlayGameScreen(7, 6);
+				PlayGameScreen pgs = new PlayGameScreen(false,7, 6);
 				setScene(pgs.getScene());
 				break;
 			case 3:

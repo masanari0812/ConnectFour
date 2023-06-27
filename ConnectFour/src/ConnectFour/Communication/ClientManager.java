@@ -7,12 +7,15 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import ConnectFour.Screen.DemoScreen.DemoScreen;
+import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
 
 public class ClientManager extends Thread {
 
 	private Socket socket;
+	private PlayGameScreen pgs;
 
-	public ClientManager() {
+	public ClientManager(PlayGameScreen pgs) {
+		this.pgs = pgs;
 	}
 
 	@Override
@@ -28,9 +31,14 @@ public class ClientManager extends Thread {
 			DemoScreen.changeString(localhost.getHostAddress());
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
-				System.out.println("OK!!");
+				pgs.setHost(false);
+				pgs.setInputStream(socket.getInputStream());
+				pgs.setOutputStream(socket.getOutputStream());
 			}
+			while (pgs.getOnline())
+				;
 			socket.close();
+			this.interrupt();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

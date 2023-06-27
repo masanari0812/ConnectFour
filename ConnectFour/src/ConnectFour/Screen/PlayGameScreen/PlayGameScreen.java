@@ -1,9 +1,12 @@
 package ConnectFour.Screen.PlayGameScreen;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import ConnectFour.ConnectFour;
+import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,18 +23,30 @@ public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
 	private int used_skill = 0;		// スキルを使用した回数を判断する変数
-	private InputStream
-
-	//private HBox hb;
-	
+	private boolean online;
+	private boolean host;
+	private InputStream is;
+	private OutputStream os;
 	
 	
 	// columnとrowをコンストラクタで取得
-	public PlayGameScreen(int column, int row) {
+	public PlayGameScreen(boolean online,int column, int row) {
+		if(online)
+		{
+			ServerManager sm=new ServerManager(this);
+			sm.start();
+			try {
+				Thread.sleep(3000);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		boardState = new ArrayList<>();
 		for (int x = 0; x < column; x++) {		// 列の数だけArrayListを追加
 			boardState.add(new ArrayList<>());
 		}
+		this.online=online;
 		this.column = column;
 		this.row = row;
 		reloadBoard();
@@ -227,8 +242,22 @@ public class PlayGameScreen extends OriginScreen {
 			return true;
 		}
 	}
-
 	
+	public void setHost(boolean host) {
+		this.host=host;
+	}
+	
+	public boolean getOnline() {
+		return online;
+	}
+	
+	public void setInputStream(InputStream is) {
+		this.is=is;
+	}
+	
+	public void setOutputStream(OutputStream os) {
+		this.os=os;
+	}
 	
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
@@ -274,9 +303,4 @@ public class PlayGameScreen extends OriginScreen {
 	
 	
 	
-	@Override
-	public void changeNextScreen() {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
 }

@@ -57,15 +57,13 @@ public class DemoScreen extends OriginScreen {
 		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene
 		scene = new Scene(vb);
 		//画面切り替え処理
-		changeNextScreen();
 
 	}
 
 	//スクリーン転換時の処理
 	//(今回はデモなのでスクリーン転換ではなくスクリーン設定のみになっている)
 	@Override
-	public void changeNextScreen() {
-
+	public void changeNextScreen(OriginScreen os) {
 		//ConnctFour.getStage()で起動中のStageを持ってこれる
 		//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる)
 		ConnectFour.getStage().setScene(scene);
