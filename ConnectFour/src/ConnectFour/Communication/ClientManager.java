@@ -32,8 +32,8 @@ public class ClientManager extends Thread {
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
 				pgs.setHost(false);
-				pgs.setInputStream(socket.getInputStream());
-				pgs.setOutputStream(socket.getOutputStream());
+				pgs.setObjectInputStream(socket.getInputStream());
+				pgs.setObjectOutputStream(socket.getOutputStream());
 			}
 			while (pgs.getOnline())
 				;

@@ -30,13 +30,13 @@ public class ServerManager extends Thread {
 			DatagramPacket packet = new DatagramPacket(sendData, sendData.length, broadcastAddress, 1182);
 			handShakeSocket.send(packet);
 			handShakeSocket.close();
-			serverSocket.setSoTimeout(3000);
+			serverSocket.setSoTimeout(2500);
 			this.socket = serverSocket.accept();
 			serverSocket.close();
 			if (socket.isConnected()) {
 				pgs.setHost(true);
-				pgs.setInputStream(socket.getInputStream());
-				pgs.setOutputStream(socket.getOutputStream());
+				pgs.setObjectInputStream(socket.getInputStream());
+				pgs.setObjectOutputStream(socket.getOutputStream());
 			}
 			while (pgs.getOnline())
 				;

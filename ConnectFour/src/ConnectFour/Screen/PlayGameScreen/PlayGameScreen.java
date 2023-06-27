@@ -1,11 +1,15 @@
 package ConnectFour.Screen.PlayGameScreen;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import ConnectFour.ConnectFour;
+import ConnectFour.Communication.CommunicationObject;
 import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
 import javafx.event.ActionEvent;
@@ -22,45 +26,56 @@ import javafx.scene.shape.Rectangle;
 public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
-	private int used_skill = 0;		// スキルを使用した回数を判断する変数
+	private int used_skill = 0; // スキルを使用した回数を判断する変数
 	private boolean online;
 	private boolean host;
-	private InputStream is;
-	private OutputStream os;
-	
-	
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+
 	// columnとrowをコンストラクタで取得
-	public PlayGameScreen(boolean online,int column, int row) {
-		if(online)
-		{
-			ServerManager sm=new ServerManager(this);
+	public PlayGameScreen(boolean online, int column, int row) {
+		if (online) {
+			ServerManager sm = new ServerManager(this);
 			sm.start();
 			try {
 				Thread.sleep(3000);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
+			try {
+				if (host) {
+					oos.writeObject(new CommunicationObject("Player1", column, row));
+					oos.flush();
+				} else {
+					CommunicationObject size=(CommunicationObject)ois.readObject();
+					column=size.getX();
+					row=size.getY();
+				}
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
 		}
-		
+
 		boardState = new ArrayList<>();
-		for (int x = 0; x < column; x++) {		// 列の数だけArrayListを追加
+		for (int x = 0; x < column; x++) { // 列の数だけArrayListを追加
 			boardState.add(new ArrayList<>());
 		}
-		this.online=online;
+		this.online = online;
 		this.column = column;
 		this.row = row;
 		reloadBoard();
 	}
 
 	// x 列の一番下のマスを染める
-	public PlayerAffiliation putOnSpace(PlayerAffiliation player, int x) {	// x: 列の場所 0 to 6
+	public PlayerAffiliation putOnSpace(PlayerAffiliation player, int x) { // x: 列の場所 0 to 6
 		if (boardState.get(x).size() <= row) {
 			boardState.get(x).add(player);
 		}
 		return PlayerAffiliation.NONE;
 	}
 
-	
 	// 特定のマスを返り値として返す
 	public PlayerAffiliation getSpace(int x, int y) {
 		if (x < 0 || x >= column || y < 0 || y >= boardState.get(x).size()) {
@@ -69,17 +84,15 @@ public class PlayGameScreen extends OriginScreen {
 		return boardState.get(x).get(y);
 	}
 
-	
 	// x 列 y 行目のマスをplayerの色で染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x, int y) {
 		if (player == PlayerAffiliation.NONE)
 			return;
 		boardState.get(x).remove(y);
-		boardState.get(x).add(y, player);	// y: 追加する場所  player: 追加する値
+		boardState.get(x).add(y, player); // y: 追加する場所  player: 追加する値
 		reloadBoard();
 	}
 
-	
 	// x 列の一番下のマスを染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x) {
 		if (player == PlayerAffiliation.NONE)
@@ -89,25 +102,23 @@ public class PlayGameScreen extends OriginScreen {
 		reloadBoard();
 	}
 
-	
 	// スキルの処理(青色のマスで層を作る)
 	public void activateSkill(List<List<PlayerAffiliation>> boardState) {
 		used_skill += 1;
 		int count;
-		
+
 		for (int x = 0; x < column; x++) {
 			count = 0;
 			for (int y = 0; y < row; y++) {
-				if (count == 0 && boardState.get(x).get(row-1-y) == PlayerAffiliation.NONE) {
-					setSpace(PlayerAffiliation.BLOCK, x, row-1-y);
+				if (count == 0 && boardState.get(x).get(row - 1 - y) == PlayerAffiliation.NONE) {
+					setSpace(PlayerAffiliation.BLOCK, x, row - 1 - y);
 					count += 1;
 				}
 			}
-		}		
+		}
 		reloadBoard();
 	}
-	
-	
+
 	// 盤面の生成・更新，イベントハンドラの登録(マウス，ボタン)
 	// used_skill が 2 の場合，ボタンは生成しない
 	public void reloadBoard() {
@@ -118,7 +129,7 @@ public class PlayGameScreen extends OriginScreen {
 			hb.getChildren().add(vb = new VBox());
 			vb.setSpacing(5);
 			for (int y = row - 1; y >= 0; y--) {
-				Circle space = new Circle(40, 50, 50); 			// space: マス
+				Circle space = new Circle(40, 50, 50); // space: マス
 				space.setFill(getSpace(x, y).getColor());
 				vb.getChildren().add(space);
 			}
@@ -133,23 +144,20 @@ public class PlayGameScreen extends OriginScreen {
 			r.setFill(Color.GREY);
 			sideBar.getChildren().addAll(r, bt);
 			bt.setOnAction(new ClickButtonEventHandler(boardState));
-		}
-		else {
+		} else {
 			Rectangle r = new Rectangle(40, 50, 120, 360);
 			r.setFill(Color.GREY);
 			sideBar.getChildren().add(r);
 		}
 		hb.getChildren().add(sideBar);
-		this.scene=new Scene(hb);
+		this.scene = new Scene(hb);
 		ConnectFour.getStage().setScene(scene);
 	}
 
-	
 	// x 列の要素数を返す
 	public int getFirstNoneSpace(int x) {
 		return boardState.get(x).size();
 	}
-
 
 	// 盤面の把握 列の確認
 	public int countColumnSpace(PlayerAffiliation team) {
@@ -170,8 +178,7 @@ public class PlayGameScreen extends OriginScreen {
 		}
 		return point;
 	}
-	
-	
+
 	// 行の確認
 	public int countRowSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -192,7 +199,6 @@ public class PlayGameScreen extends OriginScreen {
 		return point;
 	}
 
-	
 	// 斜めの確認1
 	public int countRightSlashSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -213,7 +219,6 @@ public class PlayGameScreen extends OriginScreen {
 		return point;
 	}
 
-	
 	// 斜めの確認2
 	public int countLeftSlashSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -234,7 +239,6 @@ public class PlayGameScreen extends OriginScreen {
 		return point;
 	}
 
-	
 	public boolean breakSpace(int x, int y) {
 		if (getSpace(x, y).equals(PlayerAffiliation.NONE)) {
 			return false;
@@ -242,23 +246,23 @@ public class PlayGameScreen extends OriginScreen {
 			return true;
 		}
 	}
-	
+
 	public void setHost(boolean host) {
-		this.host=host;
+		this.host = host;
 	}
-	
+
 	public boolean getOnline() {
 		return online;
 	}
-	
-	public void setInputStream(InputStream is) {
-		this.is=is;
+
+	public void setObjectInputStream(InputStream is) throws IOException {
+		this.ois = new ObjectInputStream(is);
 	}
-	
-	public void setOutputStream(OutputStream os) {
-		this.os=os;
+
+	public void setObjectOutputStream(OutputStream os) throws IOException {
+		this.oos = new ObjectOutputStream(os);
 	}
-	
+
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
 		private int x;
@@ -284,23 +288,19 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}
 
-	
 	// Skillボタンをクリックしたらスキルの効果を反映させる処理
 	class ClickButtonEventHandler implements EventHandler<ActionEvent> {
 		private List<List<PlayerAffiliation>> boardState;
-		
-		
-		public ClickButtonEventHandler(List<List<PlayerAffiliation>> boardState) {		// 盤面の情報を受け取る
+
+		public ClickButtonEventHandler(List<List<PlayerAffiliation>> boardState) { // 盤面の情報を受け取る
 			this.boardState = boardState;
 		}
-		
+
 		@Override
 		public void handle(ActionEvent e) {
 			activateSkill(boardState);
 			System.out.println("activate skill");
 		}
 	}
-	
-	
-	
+
 }
