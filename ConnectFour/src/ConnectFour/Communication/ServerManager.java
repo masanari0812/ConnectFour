@@ -14,6 +14,7 @@ public class ServerManager extends Thread {
 
 	private Socket socket;
 	private PlayGameScreen pgs;
+	private int num=0;
 
 	public ServerManager(PlayGameScreen pgs) {
 		this.pgs = pgs;
@@ -22,6 +23,7 @@ public class ServerManager extends Thread {
 	@Override
 	public void run() {
 		try {
+			System.out.println(num++);
 			ServerSocket serverSocket = new ServerSocket(8782);
 			InetAddress localhost = InetAddress.getLocalHost();
 			DatagramSocket handShakeSocket = new DatagramSocket();
@@ -31,9 +33,12 @@ public class ServerManager extends Thread {
 			handShakeSocket.send(packet);
 			handShakeSocket.close();
 			serverSocket.setSoTimeout(2500);
+			System.out.println(num++);
 			this.socket = serverSocket.accept();
+			System.out.println(num++);
 			serverSocket.close();
-			if (socket.isConnected()) {
+			if (socket.isConnected()) 
+				System.out.println(num++);{
 				pgs.setHost(true);
 				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
@@ -41,9 +46,12 @@ public class ServerManager extends Thread {
 			}
 			while (pgs.getOnline())
 				;
+			System.out.println(num++);
 			socket.close();
 			this.interrupt();
 		} catch (SocketTimeoutException e) {
+
+			System.out.println("a");
 			ClientManager cm=new ClientManager(pgs);
 			cm.start();
 			

@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import ConnectFour.Screen.DemoScreen.DemoScreen;
 import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
 
 public class ClientManager extends Thread {
@@ -28,7 +27,7 @@ public class ClientManager extends Thread {
 			byte[] receivedData = receivePacket.getData();
 			InetAddress localhost = InetAddress.getByAddress(receivedData);
 			handShakeSocket.close();
-			DemoScreen.changeString(localhost.getHostAddress());
+			System.out.println(localhost.getHostAddress());
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
 				pgs.setHost(false);

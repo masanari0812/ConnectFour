@@ -24,6 +24,7 @@ public class ConnectFour extends Application {
 	public void start(Stage stage) throws Exception {
 		setStage(stage);
 		VBox vb = new VBox();
+		vb.setSpacing(20);
 		for (int i = 1; i <= 5; i++) {
 			//Textに表示する文字列の作成
 			String str = String.valueOf(i) + "番目のボタン";
@@ -34,7 +35,7 @@ public class ConnectFour extends Application {
 			//VBoxに作成したNodeを追加(今回はTextインスタンス)
 			vb.getChildren().add(text);
 		}
-		setScene(new Scene(vb));
+		setScene(new Scene(vb,400,300));
 		stage.setTitle("ConnectFour");
 		stage.show();
 	}
@@ -81,7 +82,6 @@ public class ConnectFour extends Application {
 				setScene(sbs.getScene());
 				break;
 			case 5:
-
 				SelectModeScreen sms = new SelectModeScreen();
 				ConnectFour.getStage().setScene(sms.getScene());
 				break;
