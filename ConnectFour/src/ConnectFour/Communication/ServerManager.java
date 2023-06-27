@@ -32,7 +32,7 @@ public class ServerManager extends Thread {
 			DatagramPacket packet = new DatagramPacket(sendData, sendData.length, broadcastAddress, 1182);
 			handShakeSocket.send(packet);
 			handShakeSocket.close();
-			//serverSocket.setSoTimeout(2500);
+			serverSocket.setSoTimeout(2500);
 			System.out.println(num++);
 			this.socket = serverSocket.accept();
 			System.out.println(num++);
