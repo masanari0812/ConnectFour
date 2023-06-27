@@ -50,7 +50,6 @@ public class ServerManager extends Thread {
 			socket.close();
 			this.interrupt();
 		} catch (SocketTimeoutException e) {
-
 			System.out.println("a");
 			ClientManager cm=new ClientManager(pgs);
 			cm.start();

@@ -12,7 +12,8 @@ public class ClientManager extends Thread {
 
 	private Socket socket;
 	private PlayGameScreen pgs;
-
+	private int num=0;
+	
 	public ClientManager(PlayGameScreen pgs) {
 		this.pgs = pgs;
 	}
@@ -20,21 +21,26 @@ public class ClientManager extends Thread {
 	@Override
 	public void run() {
 		try {
+			System.out.println(num++);
 			DatagramSocket handShakeSocket = new DatagramSocket(1182);
 			byte[] receiveData = new byte[16];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			handShakeSocket.receive(receivePacket);
+			System.out.println(num++);
 			byte[] receivedData = receivePacket.getData();
 			InetAddress localhost = InetAddress.getByAddress(receivedData);
 			handShakeSocket.close();
+			System.out.println(num++);
 			System.out.println(localhost.getHostAddress());
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
+				System.out.println("b");
 				pgs.setHost(false);
 				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
 				pgs.makeBoard();
 			}
+			System.out.println(num++);
 			while (pgs.getOnline())
 				;
 			socket.close();
