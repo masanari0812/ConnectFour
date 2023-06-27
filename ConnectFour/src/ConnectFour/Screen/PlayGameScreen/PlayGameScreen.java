@@ -36,8 +36,9 @@ public class PlayGameScreen extends OriginScreen {
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
+		this.online = online;
 		if (online) {
-			Button stopBT=new Button("Stop Matching");
+			Button stopBT = new Button("Stop Matching");
 			Text text = new Text("Matching now");
 			BorderPane bp = new BorderPane();
 			bp.setCenter(text);
@@ -45,35 +46,39 @@ public class PlayGameScreen extends OriginScreen {
 			ConnectFour.getStage().setScene(new Scene(bp, 400, 300));
 			ServerManager sm = new ServerManager(this);
 			sm.start();
-			while (ois == null || oos == null)
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-			try {
-				if (host) {
-					oos.writeObject(new CommunicationObject("Player1", column, row));
-					oos.flush();
-				} else {
-					CommunicationObject size = (CommunicationObject) ois.readObject();
-					column = size.getX();
-					row = size.getY();
-				}
-			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		} else {
+			this.column = column;
+			this.row = row;
+			makeBoard();
+		}
+	}
 
+	public void makeBoard() {
+		if (online) {
+			boolean retry = true;
+			while (retry)
+				try {
+					if (host) {
+						oos.writeObject(new CommunicationObject("Player1", column, row));
+						oos.flush();
+					} else {
+						CommunicationObject size = (CommunicationObject) ois.readObject();
+						column = size.getX();
+						row = size.getY();
+					}
+					retry = false;
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 		}
 
 		boardState = new ArrayList<>();
 		for (int x = 0; x < column; x++) { // 列の数だけArrayListを追加
 			boardState.add(new ArrayList<>());
 		}
-		this.online = online;
-		this.column = column;
-		this.row = row;
+
 		reloadBoard();
+
 	}
 
 	// x 列の一番下のマスを染める

@@ -37,6 +37,7 @@ public class ServerManager extends Thread {
 				pgs.setHost(true);
 				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
+				pgs.makeBoard();
 			}
 			while (pgs.getOnline())
 				;
@@ -45,6 +46,7 @@ public class ServerManager extends Thread {
 		} catch (SocketTimeoutException e) {
 			ClientManager cm=new ClientManager(pgs);
 			cm.start();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

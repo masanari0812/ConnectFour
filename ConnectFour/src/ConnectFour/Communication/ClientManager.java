@@ -34,6 +34,7 @@ public class ClientManager extends Thread {
 				pgs.setHost(false);
 				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
+				pgs.makeBoard();
 			}
 			while (pgs.getOnline())
 				;
