@@ -3,7 +3,6 @@ package ConnectFour.Communication;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -24,15 +23,15 @@ public class ClientManager extends Thread {
 		try {
 			System.out.println(num++);
 			DatagramSocket handShakeSocket = new DatagramSocket(1182);
-			byte[] receiveData = new byte[16];
+			byte[] receiveData = new byte[InetAddress.getLocalHost().getAddress().length];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			handShakeSocket.receive(receivePacket);
 			System.out.println(num++);
 			byte[] receivedData = receivePacket.getData();
-			InetAddress localhost = Inet4Address.getByAddress(receivedData);
+			InetAddress localhost = InetAddress.getByAddress(receivedData);
 			handShakeSocket.close();
 			System.out.println(num++);
-			System.out.println(localhost.getHostAddress()+localhost.getHostName());
+			System.out.println(localhost.getHostAddress());
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
 				System.out.println("b");
