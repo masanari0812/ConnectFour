@@ -28,7 +28,7 @@ public class ServerManager extends Thread {
 			ServerSocket serverSocket = new ServerSocket(8782);
 			InetAddress localhost = Inet4Address.getLocalHost();
 			DatagramSocket handShakeSocket = new DatagramSocket();
-			InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255");
+			InetAddress broadcastAddress = Inet4Address.getByName("255.255.255.255");
 			byte[] sendData = localhost.getAddress();
 			DatagramPacket packet = new DatagramPacket(sendData, sendData.length, broadcastAddress, 1182);
 			handShakeSocket.send(packet);
