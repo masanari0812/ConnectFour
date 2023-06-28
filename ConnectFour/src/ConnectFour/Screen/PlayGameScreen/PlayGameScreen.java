@@ -67,13 +67,12 @@ public class PlayGameScreen extends OriginScreen {
 						row = size.getY();
 					}
 					retry = false;
-					System.out.println("d");
 				} catch (IOException | ClassNotFoundException e) {
 					System.out.println("c");
 					e.printStackTrace();
 				}
 		}
-
+		System.out.println("d");
 		boardState = new ArrayList<>();
 		for (int x = 0; x < column; x++) { // 列の数だけArrayListを追加
 			boardState.add(new ArrayList<>());
