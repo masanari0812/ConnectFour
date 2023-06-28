@@ -3,6 +3,7 @@ package ConnectFour.Communication;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -25,7 +26,7 @@ public class ServerManager extends Thread {
 		try {
 			System.out.println(num++);
 			ServerSocket serverSocket = new ServerSocket(8782);
-			InetAddress localhost = InetAddress.getLocalHost();
+			InetAddress localhost = Inet4Address.getLocalHost();
 			DatagramSocket handShakeSocket = new DatagramSocket();
 			InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255");
 			byte[] sendData = localhost.getAddress();

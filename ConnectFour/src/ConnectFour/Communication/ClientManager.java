@@ -31,7 +31,7 @@ public class ClientManager extends Thread {
 			InetAddress localhost = InetAddress.getByAddress(receivedData);
 			handShakeSocket.close();
 			System.out.println(num++);
-			System.out.println(localhost.getHostAddress());
+			System.out.println(localhost.getHostAddress()+localhost.getHostName());
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
 				System.out.println("b");
