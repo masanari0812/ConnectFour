@@ -67,7 +67,9 @@ public class PlayGameScreen extends OriginScreen {
 						row = size.getY();
 					}
 					retry = false;
+					System.out.println("d");
 				} catch (IOException | ClassNotFoundException e) {
+					System.out.println("c");
 					e.printStackTrace();
 				}
 		}
