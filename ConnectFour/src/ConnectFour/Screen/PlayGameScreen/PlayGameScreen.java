@@ -33,6 +33,7 @@ public class PlayGameScreen extends OriginScreen {
 	private boolean host;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	private Thread onlineMgr;
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
@@ -44,8 +45,8 @@ public class PlayGameScreen extends OriginScreen {
 			bp.setCenter(text);
 			bp.setBottom(stopBT);
 			ConnectFour.getStage().setScene(new Scene(bp, 400, 300));
-			ServerManager sm = new ServerManager(this);
-			sm.start();
+			onlineMgr =new ServerManager(this);
+			onlineMgr.start();
 		} else {
 			this.column = column;
 			this.row = row;
@@ -277,6 +278,10 @@ public class PlayGameScreen extends OriginScreen {
 
 	public void setObjectOutputStream(OutputStream os) throws IOException {
 		this.oos = new ObjectOutputStream(os);
+	}
+	
+	public void setOnlineMgr(Thread t) {
+		this.onlineMgr=t;
 	}
 
 	// マウスでマスをクリックしたら赤or黄色に染まる処理

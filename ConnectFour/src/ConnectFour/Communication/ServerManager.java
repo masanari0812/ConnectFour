@@ -41,6 +41,7 @@ public class ServerManager extends Thread {
 				System.out.println("c");
 				pgs.setHost(true);
 				pgs.setObjectInputStream(socket.getInputStream());
+				System.out.println("c");
 				pgs.setObjectOutputStream(socket.getOutputStream());
 				System.out.println("did");
 				pgs.makeBoard();
@@ -54,6 +55,7 @@ public class ServerManager extends Thread {
 		} catch (SocketTimeoutException e) {
 			System.out.println("a");
 			ClientManager cm = new ClientManager(pgs);
+			pgs.setOnlineMgr(cm);
 			cm.start();
 
 		} catch (IOException e) {
