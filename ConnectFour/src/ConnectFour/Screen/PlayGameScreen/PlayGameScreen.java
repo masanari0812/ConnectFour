@@ -55,22 +55,23 @@ public class PlayGameScreen extends OriginScreen {
 
 	public void makeBoard() {
 		if (online) {
-			boolean retry = true;
-			while (retry)
-				try {
-					if (host) {
-						oos.writeObject(new CommunicationObject("Player1", column, row));
-						oos.flush();
-					} else {
+			try {
+				if (host) {
+					oos.writeObject(new CommunicationObject("Player1", column, row));
+					oos.flush();
+				} else {
+					while (true) {
 						CommunicationObject size = (CommunicationObject) ois.readObject();
+						if(size==null)
+							continue;
 						column = size.getX();
 						row = size.getY();
+						break;
 					}
-					retry = false;
-				} catch (IOException | ClassNotFoundException e) {
-					System.out.println("c");
-					e.printStackTrace();
 				}
+			} catch (IOException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("d");
 		boardState = new ArrayList<>();
