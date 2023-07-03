@@ -54,6 +54,7 @@ public class PlayGameScreen extends OriginScreen {
 	}
 
 	public void makeBoard() {
+		System.out.println("d");
 		if (online) {
 			try {
 				if (host) {
