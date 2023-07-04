@@ -1,7 +1,8 @@
 package ConnectFour.Screen.ResultScreen;
 
 import ConnectFour.Screen.OriginScreen;
-import javafx.event.ActionEvent;
+import ConnectFour.Screen.SelectBoardScreen.SelectBoardScreen;
+import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
