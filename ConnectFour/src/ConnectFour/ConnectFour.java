@@ -74,7 +74,7 @@ public class ConnectFour extends Application {
 				setScene(pgs.getScene());
 				break;
 			case 3:
-				ResultScreen rs = new ResultScreen(true);
+				ResultScreen rs = new ResultScreen(true,false,7,6);
 				setScene(rs.getScene());
 				break;
 			case 4:
