@@ -64,6 +64,8 @@ public class SelectBoardScreen extends OriginScreen {
 		HBox size = new HBox();
 		this.columnTF = new TextField();
 		this.rowTF = new TextField();
+		columnTF.setEditable(false);
+		rowTF.setEditable(false);
 		Text midText = new Text("×");
 		size.getChildren().addAll(columnTF, midText, rowTF);
 		Button start = new Button("Start");
