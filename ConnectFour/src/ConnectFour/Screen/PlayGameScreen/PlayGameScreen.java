@@ -25,7 +25,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
@@ -122,7 +124,10 @@ public class PlayGameScreen extends OriginScreen {
 		System.out.println(player.toString());
 		reloadBoard();
 		if (judgeWin()) {
-
+			Text result=new Text(turn.toString()+" Win!");
+			result.setFont(new Font(25));
+			Stage simpleResult  = new Stage();
+			
 			if (turn == PlayerAffiliation.PLAYER1)
 				changeNextScreen(new ResultScreen(true));
 			else

@@ -1,8 +1,6 @@
 package ConnectFour.Screen.ResultScreen;
 
 import ConnectFour.Screen.OriginScreen;
-import ConnectFour.Screen.SelectBoardScreen.SelectBoardScreen;
-import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -43,6 +41,22 @@ public class ResultScreen extends OriginScreen {
 		this.scene = new Scene(bp, 300, 200);
 	}
 
+	public class ChangeSelectBoardScreen implements EventHandler<ActionEvent> {
+		private int num;
+
+		//コンストラクタ
+		public ChangeSelectBoardScreen(int num) {
+			this.num = num;
+		}
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			String str = String.valueOf(num);
+			//TextFieldの文字列の変更処理
+			tf.setText(str);
+		}
+	}
+	
 	public class MousePressedHandler implements EventHandler<ActionEvent> {
 		private int num;
 
@@ -57,6 +71,5 @@ public class ResultScreen extends OriginScreen {
 			//TextFieldの文字列の変更処理
 			tf.setText(str);
 		}
-
 	}
 }
