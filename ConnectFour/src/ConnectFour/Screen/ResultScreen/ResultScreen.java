@@ -1,9 +1,8 @@
 package ConnectFour.Screen.ResultScreen;
 
-import ConnectFour.ConnectFour;
-import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
-import javafx.event.ActionEvent;
+import ConnectFour.Screen.SelectBoardScreen.SelectBoardScreen;
+import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,59 +21,55 @@ public class ResultScreen extends OriginScreen {
 		public ResultScreen(){
 			button = new Button("続ける");
 			button1 = new Button("モード選択");
-			button.setFont(new Font(25));
+			
 			//buttonの文字の大きさを25にする
-			button1.setFont(new Font(25));
+			button.setFont(new Font(25));
+			
 			//button1の文字の大きさを25にする
+			button1.setFont(new Font(25));
+			
 		    BorderPane bp = new BorderPane();
+		    
+		    //左右に２つのボタンを設置する
 		    bp.setLeft(button);
 		    bp.setRight(button1);
-		    /*//button.setOnAction(new MousePressedHandler());
 		    
+		    /*//button.setOnAction(new MousePressedHandler());
 		    //継承元のOriginScreenにあるscene変数に格納 */
+		    button.setOnMouseClicked(new ClickButton(true));
+		    button1.setOnMouseClicked(new ClickButton1());
+		    
 		    this.scene = new Scene(bp,300,200);
 		}
 		
-		public class MousePressedHandler implements EventHandler<ActionEvent>{
-			private int num;
-
+		//button(続ける)がクリックされたときに発生するイベントの定義
+		class ClickButton implements EventHandler<MouseEvent>{
+			//何番目のボタンかの情報を保持する変数
+			private boolean online;
+			
 			//コンストラクタ
-			public MousePressedHandler(int num) {
-				this.num = num;
+			public ClickButton(boolean multi) {
+				this.online = multi;
 			}
 			
+			//イベント発生時の処理
 			@Override
-			public void handle(ActionEvent arg0) {	
-				String str = String.valueOf(num);
-				//TextFieldの文字列の変更処理
-				tf.setText(str);
-			}
-			
-		}
-
-		@Override
-		public void changeNextScreen() {
-			ConnectFour.getStage().setScene(scene);
-			//持ってきたStageに作成したSceneを設定(この時点で画面が切り替わる)
-		}
-		//通信用デバッグ
-		public static void changeString(String str) {
-			tf.setText(str);
-		}
-
-		class sendLocalIP implements EventHandler<MouseEvent> {
-			@Override
-			public void handle(MouseEvent arg0) {
-				Thread sm = new ServerManager();
-				sm.start();
+			public void handle(MouseEvent e) {
+				changeNextScreen(new SelectBoardScreen(online));
 			}
 		}
-		//通信用デバッグ処理終了
-
-	
-
-
 		
+		
+		//button1(モード選択)がクリックされたときに発生するイベントの定義
+		class ClickButton1 implements EventHandler<MouseEvent>{
+			
+			//イベント発生時の処理
+			@Override
+			public void handle(MouseEvent e) {
+				changeNextScreen(new SelectModeScreen());
+			}
+		}
 	
-}
-
+		
+}		
+		
