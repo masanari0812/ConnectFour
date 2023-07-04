@@ -14,7 +14,6 @@ import ConnectFour.Communication.CommunicationObject;
 import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
 import ConnectFour.Screen.ResultScreen.ResultScreen;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,7 +31,7 @@ import javafx.stage.Stage;
 public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
-	private int used_skill = 0; // スキルを使用した回数を判断する変数
+	private boolean skill; // スキルを使用した回数を判断する変数
 	private boolean online;
 	private boolean host;
 	private boolean end;
@@ -45,6 +44,7 @@ public class PlayGameScreen extends OriginScreen {
 	public PlayGameScreen(boolean online, int column, int row) {
 		this.online = online;
 		this.end = false;
+		this.skill = true;
 		this.turn = PlayerAffiliation.PLAYER1;
 		if (online) {
 			Button stopBT = new Button("Stop Matching");
@@ -120,13 +120,13 @@ public class PlayGameScreen extends OriginScreen {
 
 	// x 列の一番下のマスを染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x) {
-		if (player == PlayerAffiliation.NONE || player != turn||end)
+		if (player != turn || end)
 			return;
 		boardState.get(x).add(player);
 		System.out.println(player.toString());
 		reloadBoard();
 		if (judgeWin()) {
-			this.end=true;
+			this.end = true;
 			Stage simpleResult = new Stage();
 			Text result = new Text(turn.toString() + " Win!");
 			result.setFont(new Font(25));
@@ -134,32 +134,27 @@ public class PlayGameScreen extends OriginScreen {
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
 				if (player == PlayerAffiliation.PLAYER1)
-					changeNextScreen(new ResultScreen(true,online,column,row));
+					changeNextScreen(new ResultScreen(true, online, column, row));
 				else
-					changeNextScreen(new ResultScreen(false,online,column,row));
+					changeNextScreen(new ResultScreen(false, online, column, row));
 			});
 			VBox sr = new VBox();
 			sr.getChildren().addAll(result, nextScreen);
 			simpleResult.setScene(new Scene(sr));
 			simpleResult.show();
 		}
-			changeTurn();
+		changeTurn();
 	}
 
 	// スキルの処理(青色のマスで層を作る)
-	public void activateSkill(List<List<PlayerAffiliation>> boardState) {
-		used_skill += 1;
-		int count;
-
-		for (int x = 0; x < column; x++) {
-			count = 0;
-			for (int y = 0; y < row; y++) {
-				if (count == 0 && boardState.get(x).get(row - 1 - y) == PlayerAffiliation.NONE) {
-					setSpace(PlayerAffiliation.BLOCK, x, row - 1 - y);
-					count += 1;
-				}
-			}
-		}
+	public void activateSkill() {
+		if (turn != PlayerAffiliation.PLAYER1 || !skill)
+			return;
+		this.skill = false;
+		for (int x = 0; x < column; x++)
+			if (getFirstNoneSpace(x) != row)
+				boardState.get(x).add(PlayerAffiliation.BLOCK);
+		changeTurn();
 		reloadBoard();
 	}
 
@@ -181,17 +176,16 @@ public class PlayGameScreen extends OriginScreen {
 		}
 
 		VBox sideBar = new VBox();
-		if (used_skill != 2) {
+		Rectangle r = new Rectangle(40, 50, 120, 360);
+		r.setFill(Color.GREY);
+		sideBar.getChildren().add(r);
+		if (skill) {
 			Button bt = new Button("Skill");
 			bt.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			Rectangle r = new Rectangle(40, 50, 120, 360);
-			r.setFill(Color.GREY);
-			sideBar.getChildren().addAll(r, bt);
-			bt.setOnAction(new ClickButtonEventHandler(boardState));
-		} else {
-			Rectangle r = new Rectangle(40, 50, 120, 360);
-			r.setFill(Color.GREY);
-			sideBar.getChildren().add(r);
+			bt.setOnMousePressed(event -> {
+				activateSkill();
+			});
+			sideBar.getChildren().add(bt);
 		}
 		hb.getChildren().add(sideBar);
 		this.scene = new Scene(hb);
@@ -363,21 +357,6 @@ public class PlayGameScreen extends OriginScreen {
 				;//setSpace(PlayerAffiliation.PLAYER2, x);
 			System.out.println(String.valueOf(x) + " " + String.valueOf(y));
 
-		}
-	}
-
-	// Skillボタンをクリックしたらスキルの効果を反映させる処理
-	class ClickButtonEventHandler implements EventHandler<ActionEvent> {
-		private List<List<PlayerAffiliation>> boardState;
-
-		public ClickButtonEventHandler(List<List<PlayerAffiliation>> boardState) { // 盤面の情報を受け取る
-			this.boardState = boardState;
-		}
-
-		@Override
-		public void handle(ActionEvent e) {
-			activateSkill(boardState);
-			System.out.println("activate skill");
 		}
 	}
 
