@@ -35,6 +35,7 @@ public class PlayGameScreen extends OriginScreen {
 	private int used_skill = 0; // スキルを使用した回数を判断する変数
 	private boolean online;
 	private boolean host;
+	private boolean end;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	private Thread onlineMgr;
@@ -43,6 +44,7 @@ public class PlayGameScreen extends OriginScreen {
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
 		this.online = online;
+		this.end = false;
 		this.turn = PlayerAffiliation.PLAYER1;
 		if (online) {
 			Button stopBT = new Button("Stop Matching");
@@ -118,21 +120,29 @@ public class PlayGameScreen extends OriginScreen {
 
 	// x 列の一番下のマスを染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x) {
-		if (player == PlayerAffiliation.NONE && player != turn)
+		if (player == PlayerAffiliation.NONE || player != turn||end)
 			return;
 		boardState.get(x).add(player);
 		System.out.println(player.toString());
 		reloadBoard();
 		if (judgeWin()) {
-			Text result=new Text(turn.toString()+" Win!");
+			this.end=true;
+			Stage simpleResult = new Stage();
+			Text result = new Text(turn.toString() + " Win!");
 			result.setFont(new Font(25));
-			Stage simpleResult  = new Stage();
-			
-			if (turn == PlayerAffiliation.PLAYER1)
-				changeNextScreen(new ResultScreen(true));
-			else
-				changeNextScreen(new ResultScreen(false));
-		} else
+			Button nextScreen = new Button("OK");
+			nextScreen.setOnMousePressed(event -> {
+				simpleResult.hide();
+				if (player == PlayerAffiliation.PLAYER1)
+					changeNextScreen(new ResultScreen(true));
+				else
+					changeNextScreen(new ResultScreen(false));
+			});
+			VBox sr = new VBox();
+			sr.getChildren().addAll(result, nextScreen);
+			simpleResult.setScene(new Scene(sr));
+			simpleResult.show();
+		}
 			changeTurn();
 	}
 
@@ -140,7 +150,7 @@ public class PlayGameScreen extends OriginScreen {
 	public void activateSkill(List<List<PlayerAffiliation>> boardState) {
 		used_skill += 1;
 		int count;
-		
+
 		for (int x = 0; x < column; x++) {
 			count = 0;
 			for (int y = 0; y < row; y++) {
