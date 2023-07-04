@@ -71,7 +71,7 @@ public class SelectBoardScreen extends OriginScreen {
 		Button start = new Button("Start");
 		start.setOnMousePressed(new ClickStart());
 		vb.getChildren().addAll(size, start);
-		scene = new Scene(vb);
+		scene = new Scene(vb,400,300);
 
 	}
 
