@@ -64,14 +64,12 @@ public class SelectBoardScreen extends OriginScreen {
 		HBox size = new HBox();
 		this.columnTF = new TextField();
 		this.rowTF = new TextField();
-		columnTF.setEditable(false);
-		rowTF.setEditable(false);
 		Text midText = new Text("×");
 		size.getChildren().addAll(columnTF, midText, rowTF);
 		Button start = new Button("Start");
 		start.setOnMousePressed(new ClickStart());
 		vb.getChildren().addAll(size, start);
-		scene = new Scene(vb);
+		scene = new Scene(vb,400,300);
 
 	}
 
