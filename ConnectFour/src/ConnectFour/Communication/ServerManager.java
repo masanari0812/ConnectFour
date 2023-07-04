@@ -38,12 +38,12 @@ public class ServerManager extends Thread {
 			System.out.println(num++);
 			serverSocket.close();
 			if (socket.isConnected()) {
-				System.out.println("c");
+				System.out.println(num++);
 				pgs.setHost(true);
 				pgs.setObjectInputStream(socket.getInputStream());
-				System.out.println("c");
+				System.out.println(num++);
 				pgs.setObjectOutputStream(socket.getOutputStream());
-				System.out.println("did");
+				System.out.println(num++);
 				pgs.makeBoard();
 			} else
 				System.out.println("x");
@@ -53,7 +53,7 @@ public class ServerManager extends Thread {
 			socket.close();
 			this.interrupt();
 		} catch (SocketTimeoutException e) {
-			System.out.println("a");
+			System.out.println(num+"!");
 			ClientManager cm = new ClientManager(pgs);
 			pgs.setOnlineMgr(cm);
 			cm.start();

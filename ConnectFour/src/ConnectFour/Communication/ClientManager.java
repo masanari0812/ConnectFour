@@ -34,11 +34,11 @@ public class ClientManager extends Thread {
 			System.out.println(localhost.getHostAddress());
 			this.socket = new Socket(localhost, 8782);
 			if (socket.isConnected()) {
-				System.out.println("b");
+				System.out.println(num++);
 				pgs.setHost(false);
 				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
-				System.out.println("did");
+				System.out.println(num++);
 				pgs.makeBoard();
 			}else
 				System.out.println("x");
@@ -48,6 +48,7 @@ public class ClientManager extends Thread {
 			socket.close();
 			this.interrupt();
 		} catch (IOException e) {
+			System.out.println(num+"!");
 			e.printStackTrace();
 		}
 	}
