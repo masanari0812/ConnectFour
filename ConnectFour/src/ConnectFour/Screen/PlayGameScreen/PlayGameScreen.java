@@ -5,18 +5,15 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ConnectFour.ConnectFour;
 import ConnectFour.Communication.CommunicationObject;
+import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
+import ConnectFour.Screen.ResultScreen.ResultScreen;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -36,14 +33,15 @@ public class PlayGameScreen extends OriginScreen {
 	private int used_skill = 0; // スキルを使用した回数を判断する変数
 	private boolean online;
 	private boolean host;
-	private int num = 0;
-	private Socket socket;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	private Thread onlineMgr;
+	private PlayerAffiliation turn;
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
 		this.online = online;
+		this.turn = PlayerAffiliation.PLAYER1;
 		if (online) {
 			Button stopBT = new Button("Stop Matching");
 			Text text = new Text("Matching now");
@@ -51,66 +49,8 @@ public class PlayGameScreen extends OriginScreen {
 			bp.setCenter(text);
 			bp.setBottom(stopBT);
 			ConnectFour.getStage().setScene(new Scene(bp, 400, 300));
-			try {
-				System.out.println(num++);
-				ServerSocket serverSocket = new ServerSocket(8782);
-				InetAddress localhost = InetAddress.getLocalHost();
-				DatagramSocket handShakeSocket = new DatagramSocket();
-				InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255");
-				byte[] sendData = localhost.getAddress();
-				DatagramPacket packet = new DatagramPacket(sendData, sendData.length, broadcastAddress, 1182);
-				handShakeSocket.send(packet);
-				handShakeSocket.close();
-				serverSocket.setSoTimeout(2500);
-				System.out.println(num++);
-				this.socket = serverSocket.accept();
-				System.out.println(num++);
-				serverSocket.close();
-				if (socket.isConnected()) {
-					System.out.println(num++);
-					this.host=true;
-					setObjectInputStream(socket.getInputStream());
-					System.out.println(num++);
-					setObjectOutputStream(socket.getOutputStream());
-					System.out.println(num++);
-					makeBoard();
-				} else
-					System.out.println("x");
-				System.out.println(num++);
-			} catch (SocketTimeoutException e1) {
-				System.out.println(num+"!");
-				try {
-					System.out.println(num++);
-					DatagramSocket handShakeSocket = new DatagramSocket(1182);
-					byte[] receiveData = new byte[InetAddress.getLocalHost().getAddress().length];
-					DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-					handShakeSocket.receive(receivePacket);
-					System.out.println(num++);
-					byte[] receivedData = receivePacket.getData();
-					InetAddress localhost = InetAddress.getByAddress(receivedData);
-					handShakeSocket.close();
-					System.out.println(num++);
-					System.out.println(localhost.getHostAddress());
-					this.socket = new Socket(localhost, 8782);
-					if (socket.isConnected()) {
-						System.out.println(num++);
-						this.host=false;
-						setObjectInputStream(socket.getInputStream());
-						setObjectOutputStream(socket.getOutputStream());
-						System.out.println(num++);
-						makeBoard();
-					}else
-						System.out.println("x");
-					System.out.println(num++);
-					socket.close();
-				} catch (IOException e2) {
-					System.out.println(num+"!");
-					e2.printStackTrace();
-				}
-
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			onlineMgr = new ServerManager(this);
+			onlineMgr.start();
 		} else {
 			this.column = column;
 			this.row = row;
@@ -128,7 +68,7 @@ public class PlayGameScreen extends OriginScreen {
 				} else {
 					while (true) {
 						CommunicationObject size = (CommunicationObject) ois.readObject();
-						if(size==null)
+						if (size == null)
 							continue;
 						column = size.getX();
 						row = size.getY();
@@ -176,18 +116,26 @@ public class PlayGameScreen extends OriginScreen {
 
 	// x 列の一番下のマスを染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x) {
-		if (player == PlayerAffiliation.NONE)
+		if (player == PlayerAffiliation.NONE && player != turn)
 			return;
 		boardState.get(x).add(player);
-		System.out.println(String.valueOf(x) + " " + String.valueOf(boardState.get(x).size()));
+		System.out.println(player.toString());
 		reloadBoard();
+		if (judgeWin()) {
+
+			if (turn == PlayerAffiliation.PLAYER1)
+				changeNextScreen(new ResultScreen(true));
+			else
+				changeNextScreen(new ResultScreen(false));
+		} else
+			changeTurn();
 	}
 
 	// スキルの処理(青色のマスで層を作る)
 	public void activateSkill(List<List<PlayerAffiliation>> boardState) {
 		used_skill += 1;
 		int count;
-
+		
 		for (int x = 0; x < column; x++) {
 			count = 0;
 			for (int y = 0; y < row; y++) {
@@ -344,6 +292,39 @@ public class PlayGameScreen extends OriginScreen {
 		this.oos = new ObjectOutputStream(os);
 	}
 
+	public void setOnlineMgr(Thread t) {
+		this.onlineMgr = t;
+	}
+
+	public void changeTurn() {
+		switch (turn) {
+		case PLAYER1:
+			this.turn = PlayerAffiliation.PLAYER2;
+			setComTrout();
+			break;
+		case PLAYER2:
+			this.turn = PlayerAffiliation.PLAYER1;
+			break;
+		default:
+			break;
+		}
+	}
+
+	public boolean judgeWin() {
+		if (countRowSpace(turn) > 0 || countColumnSpace(turn) > 0 || countRightSlashSpace(turn) > 0
+				|| countLeftSlashSpace(turn) > 0)
+			return true;
+		return false;
+	}
+
+	public void setComTrout() {
+		Random rand = new Random();
+		int x = rand.nextInt(column);
+		while (getFirstNoneSpace(x) == row)
+			x = rand.nextInt(column);
+		;
+		setSpace(PlayerAffiliation.PLAYER2, x);
+	}
 
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
@@ -361,10 +342,10 @@ public class PlayGameScreen extends OriginScreen {
 
 		@Override
 		public void handle(MouseEvent e) {
-			if (e.isPrimaryButtonDown())
+			if (e.isPrimaryButtonDown() && getFirstNoneSpace(x) != row) {
 				setSpace(PlayerAffiliation.PLAYER1, x);
-			else if (e.isSecondaryButtonDown())
-				setSpace(PlayerAffiliation.PLAYER2, x);
+			} else if (e.isSecondaryButtonDown())
+				;//setSpace(PlayerAffiliation.PLAYER2, x);
 			System.out.println(String.valueOf(x) + " " + String.valueOf(y));
 
 		}
