@@ -134,9 +134,9 @@ public class PlayGameScreen extends OriginScreen {
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
 				if (player == PlayerAffiliation.PLAYER1)
-					changeNextScreen(new ResultScreen(true));
+					changeNextScreen(new ResultScreen(true,online,column,row));
 				else
-					changeNextScreen(new ResultScreen(false));
+					changeNextScreen(new ResultScreen(false,online,column,row));
 			});
 			VBox sr = new VBox();
 			sr.getChildren().addAll(result, nextScreen);
