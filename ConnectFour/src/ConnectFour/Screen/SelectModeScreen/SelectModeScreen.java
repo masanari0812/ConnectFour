@@ -6,20 +6,19 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class SelectModeScreen extends OriginScreen{
 	
-	private static TextField tf;
-	private Button button;
 	
 
 	public SelectModeScreen() {
 		//複数のNodeを盾に結合できるVBoxを生成
 		VBox vb = new VBox();
 		vb.setAlignment(Pos.CENTER);
+		
 		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
 
 		vb.setSpacing(20);
@@ -36,6 +35,8 @@ public class SelectModeScreen extends OriginScreen{
 			Button bt = new Button(str);
 			/* Button button = new Button(str);
 			//button.setPrefSize(30,20); */
+			bt.setPrefSize(200,100);
+			bt.setFont(new Font(25));
 			vb.getChildren().add(bt);
 			
 			//Text text = new Text(button);
@@ -50,7 +51,8 @@ public class SelectModeScreen extends OriginScreen{
 
 		/*//作成したVBoxをもとにSceneインスタンスを生成
 		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
-		scene=new Scene(vb,400,300);
+		 scene =new Scene(vb,400,300);
+		 
 	}
 
 	
