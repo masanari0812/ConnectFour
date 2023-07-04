@@ -343,10 +343,7 @@ public class PlayGameScreen extends OriginScreen {
 	public void setObjectOutputStream(OutputStream os) throws IOException {
 		this.oos = new ObjectOutputStream(os);
 	}
-	
-	public void setOnlineMgr(Thread t) {
-		this.onlineMgr=t;
-	}
+
 
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
