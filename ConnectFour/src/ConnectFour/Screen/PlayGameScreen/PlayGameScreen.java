@@ -44,6 +44,8 @@ public class PlayGameScreen extends OriginScreen {
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
+		this.column = column;
+		this.row = row;
 		this.online = online;
 		this.end = false;
 		this.skill = true;
@@ -63,8 +65,6 @@ public class PlayGameScreen extends OriginScreen {
 			onlineMgr = new ServerManager(this);
 			onlineMgr.start();
 		} else {
-			this.column = column;
-			this.row = row;
 			makeBoard();
 		}
 	}
