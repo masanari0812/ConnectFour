@@ -38,6 +38,7 @@ public class CommunicationObject implements Serializable {
 	}
 
 	public CommunicationObject(String packet) {
+		System.out.println(packet);
 		String[] str = packet.split(":");
 		switch (str[0]) {
 		case "FirstInfo":
