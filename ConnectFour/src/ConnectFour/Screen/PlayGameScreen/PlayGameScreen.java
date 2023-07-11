@@ -79,6 +79,7 @@ public class PlayGameScreen extends OriginScreen {
 				} else {
 					String packet;
 					while ((packet=br.readLine())==null);
+					System.out.println(packet);
 					CommunicationObject size = new CommunicationObject(packet);
 					column = size.getX();
 					row = size.getY();

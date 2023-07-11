@@ -81,6 +81,7 @@ public class CommunicationObject implements Serializable {
 	}
 	
 	public String getPacket() {
+		System.out.println(packet);
 		return packet;
 	}
 	
