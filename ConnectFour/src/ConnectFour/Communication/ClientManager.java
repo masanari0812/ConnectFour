@@ -12,8 +12,8 @@ public class ClientManager extends Thread {
 
 	private Socket socket;
 	private PlayGameScreen pgs;
-	private int num=0;
-	
+	private int num = 0;
+
 	public ClientManager(PlayGameScreen pgs) {
 		this.pgs = pgs;
 		pgs.setOnlineMgr(this);
@@ -37,13 +37,10 @@ public class ClientManager extends Thread {
 			if (socket.isConnected()) {
 				System.out.println(num++);
 				pgs.setHost(false);
-				System.out.println(num++);
 				pgs.setObjectInputStream(socket.getInputStream());
-				System.out.println(num++);
 				pgs.setObjectOutputStream(socket.getOutputStream());
-				System.out.println(num++);
 				pgs.makeBoard();
-			}else
+			} else
 				System.out.println("x");
 			System.out.println(num++);
 			while (pgs.getOnline())
@@ -51,7 +48,7 @@ public class ClientManager extends Thread {
 			socket.close();
 			this.interrupt();
 		} catch (IOException e) {
-			System.out.println(num+"!");
+			System.out.println(num + "!");
 			e.printStackTrace();
 		}
 	}

@@ -39,14 +39,9 @@ public class ServerManager extends Thread {
 			System.out.println(num++);
 			serverSocket.close();
 			if (socket.isConnected()) {
-				System.out.println(num++);
-				if(pgs==null)
-					System.out.println("err");
 				pgs.setHost(true);
 				pgs.setObjectInputStream(socket.getInputStream());
-				System.out.println(num++);
 				pgs.setObjectOutputStream(socket.getOutputStream());
-				System.out.println(num++);
 				pgs.makeBoard();
 			} else
 				System.out.println("x");
