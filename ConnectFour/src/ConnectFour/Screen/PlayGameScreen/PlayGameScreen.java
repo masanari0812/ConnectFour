@@ -1,10 +1,11 @@
 package ConnectFour.Screen.PlayGameScreen;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,8 +37,8 @@ public class PlayGameScreen extends OriginScreen {
 	private boolean online;
 	private boolean host;
 	private boolean end;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
+	private BufferedReader br;
+	private PrintWriter pw;
 	private Thread onlineMgr;
 	private PlayerAffiliation turn;
 
@@ -49,8 +50,8 @@ public class PlayGameScreen extends OriginScreen {
 		this.turn = PlayerAffiliation.PLAYER1;
 		if (online) {
 			Button stopBT = new Button();
-			stopBT.setOnMousePressed(event->{
-				if(onlineMgr!=null)
+			stopBT.setOnMousePressed(event -> {
+				if (onlineMgr != null)
 					onlineMgr.interrupt();
 				changeNextScreen(new SelectModeScreen());
 			});
@@ -58,7 +59,7 @@ public class PlayGameScreen extends OriginScreen {
 			BorderPane bp = new BorderPane();
 			bp.setCenter(text);
 			bp.setBottom(stopBT);
-			scene=new Scene(bp, 400, 300);
+			scene = new Scene(bp, 400, 300);
 			onlineMgr = new ServerManager(this);
 			onlineMgr.start();
 		} else {
@@ -73,19 +74,16 @@ public class PlayGameScreen extends OriginScreen {
 		if (online) {
 			try {
 				if (host) {
-					oos.writeObject(new CommunicationObject("Player1", column, row));
-					oos.flush();
+					pw.write(new CommunicationObject(null, column, row).getPacket());
+					pw.flush();
 				} else {
-					while (true) {
-						CommunicationObject size = (CommunicationObject) ois.readObject();
-						if (size == null)
-							continue;
-						column = size.getX();
-						row = size.getY();
-						break;
-					}
+					String packet;
+					while ((packet=br.readLine())==null);
+					CommunicationObject size = new CommunicationObject(packet);
+					column = size.getX();
+					row = size.getY();
 				}
-			} catch (IOException | ClassNotFoundException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -299,12 +297,13 @@ public class PlayGameScreen extends OriginScreen {
 		return online;
 	}
 
-	public void setObjectInputStream(InputStream is) throws IOException {
-		this.ois = new ObjectInputStream(is);
+	public void setBufferedReader(InputStream is) throws IOException {
+		this.br = new BufferedReader(new InputStreamReader(is));
+
 	}
 
-	public void setObjectOutputStream(OutputStream os) throws IOException {
-		this.oos = new ObjectOutputStream(os);
+	public void setPrintWriter(OutputStream os) throws IOException {
+		this.pw = new PrintWriter(os, true);
 	}
 
 	public void setOnlineMgr(Thread t) {
