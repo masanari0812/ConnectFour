@@ -37,8 +37,8 @@ public class ClientManager extends Thread {
 			if (socket.isConnected()) {
 				System.out.println(num++);
 				pgs.setHost(false);
-				pgs.setBufferedReader(socket.getInputStream());
-				pgs.setPrintWriter(socket.getOutputStream());
+				pgs.setObjectInputStream(socket.getInputStream());
+				pgs.setObjectOutputStream(socket.getOutputStream());
 				pgs.makeBoard();
 			} else
 				System.out.println("x");

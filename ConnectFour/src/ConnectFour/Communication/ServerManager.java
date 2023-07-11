@@ -40,8 +40,8 @@ public class ServerManager extends Thread {
 			serverSocket.close();
 			if (socket.isConnected()) {
 				pgs.setHost(true);
-				pgs.setBufferedReader(socket.getInputStream());
-				pgs.setPrintWriter(socket.getOutputStream());
+				pgs.setObjectInputStream(socket.getInputStream());
+				pgs.setObjectOutputStream(socket.getOutputStream());
 				pgs.makeBoard();
 			} else
 				System.out.println("x");

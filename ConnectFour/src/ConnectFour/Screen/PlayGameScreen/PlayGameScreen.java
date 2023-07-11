@@ -1,11 +1,10 @@
 package ConnectFour.Screen.PlayGameScreen;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -37,8 +36,8 @@ public class PlayGameScreen extends OriginScreen {
 	private boolean online;
 	private boolean host;
 	private boolean end;
-	private BufferedReader br;
-	private PrintWriter pw;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
 	private Thread onlineMgr;
 	private PlayerAffiliation turn;
 
@@ -74,17 +73,16 @@ public class PlayGameScreen extends OriginScreen {
 		if (online) {
 			try {
 				if (host) {
-					pw.write(new CommunicationObject(null, column, row).getPacket());
-					pw.flush();
+					oos.writeObject(new CommunicationObject(null, column, row).getPacket());
+					oos.flush();
 				} else {
-					String packet;
-					while ((packet=br.readLine())==null);
+					String packet = (String)ois.readObject();
 					System.out.println(packet);
 					CommunicationObject size = new CommunicationObject(packet);
 					column = size.getX();
 					row = size.getY();
 				}
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
@@ -298,13 +296,13 @@ public class PlayGameScreen extends OriginScreen {
 		return online;
 	}
 
-	public void setBufferedReader(InputStream is) throws IOException {
-		this.br = new BufferedReader(new InputStreamReader(is));
+	public void setObjectInputStream(InputStream is) throws IOException {
+		this.ois = new ObjectInputStream(is);
 
 	}
 
-	public void setPrintWriter(OutputStream os) throws IOException {
-		this.pw = new PrintWriter(os, true);
+	public void setObjectOutputStream(OutputStream os) throws IOException {
+		this.oos = new ObjectOutputStream(os);
 	}
 
 	public void setOnlineMgr(Thread t) {
