@@ -50,7 +50,7 @@ public class SelectBoardScreen extends OriginScreen {
 			Button bt = new Button(String.valueOf(column) + "×" + String.valueOf(row));
 			//作成したインスタンスにクリックしたときのイベントを設定
 			bt.setOnMouseClicked(new ClickButton(column, row));
-			bt.setPrefSize(300,80);
+			bt.setPrefSize(300, 80);
 			bt.setFont(new Font(25));
 			//VBoxに作成したNodeを追加(Textインスタンス)
 			vb.getChildren().add(bt);
@@ -75,10 +75,10 @@ public class SelectBoardScreen extends OriginScreen {
 		Text midText = new Text("×");
 		size.getChildren().addAll(columnTF, midText, rowTF);
 		Button start = new Button("Start");
-		start.setPrefSize(300,80);
+		start.setPrefSize(300, 80);
 		start.setOnMousePressed(new ClickStart());
 		vb.getChildren().addAll(size, start);
-		scene = new Scene(vb,400,300);
+		scene = new Scene(vb, 400, 300);
 
 	}
 
@@ -108,9 +108,12 @@ public class SelectBoardScreen extends OriginScreen {
 
 		@Override
 		public void handle(MouseEvent e) {
-			int column=Integer.parseInt(columnTF.getText());
-			int row=Integer.parseInt(rowTF.getText());
-			changeNextScreen(new PlayGameScreen(online,column,row));
+			try {
+				int column = Integer.parseInt(columnTF.getText());
+				int row = Integer.parseInt(rowTF.getText());
+				changeNextScreen(new PlayGameScreen(online, column, row));
+			} catch (NumberFormatException ex) {
+			}
 		}
 
 	}

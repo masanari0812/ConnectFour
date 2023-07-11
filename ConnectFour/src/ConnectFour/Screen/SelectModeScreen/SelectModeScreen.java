@@ -10,15 +10,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class SelectModeScreen extends OriginScreen{
-	
-	
+public class SelectModeScreen extends OriginScreen {
 
 	public SelectModeScreen() {
 		//複数のNodeを盾に結合できるVBoxを生成
 		VBox vb = new VBox();
 		vb.setAlignment(Pos.CENTER);
-		
+
 		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
 
 		vb.setSpacing(20);
@@ -35,27 +33,25 @@ public class SelectModeScreen extends OriginScreen{
 			Button bt = new Button(str);
 			/* Button button = new Button(str);
 			//button.setPrefSize(30,20); */
-			bt.setPrefSize(200,100);
+			bt.setPrefSize(200, 100);
 			bt.setFont(new Font(25));
 			vb.getChildren().add(bt);
-			
+
 			//Text text = new Text(button);
-			if(i==1)
-			bt.setOnMouseClicked(new ClickButton(false));
+			if (i == 1)
+				bt.setOnMouseClicked(new ClickButton(false));
 			else
 				bt.setOnMouseClicked(new ClickButton(true));
-			
+
 		}
-		
+
 		//メンバ変数tfにTextFieldインスタンスを生成し代入
 
 		/*//作成したVBoxをもとにSceneインスタンスを生成
 		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
-		 scene =new Scene(vb,400,300);
-		 
-	}
+		scene = new Scene(vb, 400, 300);
 
-	
+	}
 
 	//Textインスタンスがクリックされたときに発生するイベントの定義
 	class ClickButton implements EventHandler<MouseEvent> {
@@ -63,22 +59,16 @@ public class SelectModeScreen extends OriginScreen{
 		private boolean online;
 
 		//コンストラクタ
-		public ClickButton(boolean multi) {
-			this.online=multi;
+		public ClickButton(boolean online) {
+			this.online = online;
 		}
 
 		//イベント発生時の処理
 		@Override
 		public void handle(MouseEvent e) {
 			changeNextScreen(new SelectBoardScreen(online));
-				
+
 		}
 	}
 
-
 }
-
-
-
-
-	
