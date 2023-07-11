@@ -36,8 +36,8 @@ public class PlayGameScreen extends OriginScreen {
 	private boolean online;
 	private boolean host;
 	private boolean end;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
+	private InputStream is;
+	private OutputStream os;
 	private Thread onlineMgr;
 	private PlayerAffiliation turn;
 
@@ -73,10 +73,12 @@ public class PlayGameScreen extends OriginScreen {
 		if (online) {
 			try {
 				if (host) {
+					ObjectOutputStream oos=new ObjectOutputStream(os);
 					oos.writeObject(new CommunicationObject("Player1", column, row));
 					oos.flush();
 				} else {
 					while (true) {
+						ObjectInputStream ois=new ObjectInputStream(is);
 						CommunicationObject size = (CommunicationObject) ois.readObject();
 						if (size == null)
 							continue;
@@ -299,12 +301,12 @@ public class PlayGameScreen extends OriginScreen {
 		return online;
 	}
 
-	public void setObjectInputStream(InputStream is) throws IOException {
-		this.ois = new ObjectInputStream(is);
+	public void setInputStream(InputStream is) throws IOException {
+		this.is = is;
 	}
 
-	public void setObjectOutputStream(OutputStream os) throws IOException {
-		this.oos = new ObjectOutputStream(os);
+	public void setOutputStream(OutputStream os) throws IOException {
+		this.os = os;
 	}
 
 	public void setOnlineMgr(Thread t) {
