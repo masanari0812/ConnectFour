@@ -6,7 +6,6 @@ import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -15,7 +14,6 @@ public class ResultScreen extends OriginScreen {
 
 	private Button button;
 	private Button button1;
-	private static TextField tf;
 
 	public ResultScreen(boolean win, boolean online, int column, int row) {
 		Text result;

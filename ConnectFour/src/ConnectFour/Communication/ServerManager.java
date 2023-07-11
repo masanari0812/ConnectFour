@@ -43,7 +43,6 @@ public class ServerManager extends Thread {
 				if(pgs==null)
 					System.out.println("err");
 				pgs.setHost(true);
-				
 				pgs.setObjectInputStream(socket.getInputStream());
 				System.out.println(num++);
 				pgs.setObjectOutputStream(socket.getOutputStream());
