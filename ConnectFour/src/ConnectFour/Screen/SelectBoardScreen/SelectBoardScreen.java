@@ -20,12 +20,16 @@ public class SelectBoardScreen extends OriginScreen {
 
 	public SelectBoardScreen(boolean online) {
 		this.online = online;
+		
 		//複数のNodeを横に結合できるVBoxを生成
 		VBox vb = new VBox();
-		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
+		//vb内で中央位置に合わせる。
 		vb.setAlignment(Pos.CENTER);
-		int column, row;
+		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
 		vb.setSpacing(20);
+		
+		int column, row;
+
 		//1から5までのテキストを作りClickButtonイベントを設定する。
 		for (int i = 1; i <= 3; i++) {
 			//Textに表示する文字列(盤面の大きさ）の作成
@@ -74,8 +78,13 @@ public class SelectBoardScreen extends OriginScreen {
 		rowTF.setEditable(false);
 		Text midText = new Text("×");
 		size.getChildren().addAll(columnTF, midText, rowTF);
+<<<<<<< Updated upstream
 		Button start = new Button("Start");
 		start.setPrefSize(300, 80);
+=======
+		Button start = new Button("START");
+		start.setPrefSize(300,80);
+>>>>>>> Stashed changes
 		start.setOnMousePressed(new ClickStart());
 		vb.getChildren().addAll(size, start);
 		scene = new Scene(vb, 400, 300);
