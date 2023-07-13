@@ -20,7 +20,6 @@ public class SelectBoardScreen extends OriginScreen {
 
 	public SelectBoardScreen(boolean online) {
 		this.online = online;
-		
 		//複数のNodeを横に結合できるVBoxを生成
 		VBox vb = new VBox();
 		//vb内で中央位置に合わせる。
@@ -29,7 +28,6 @@ public class SelectBoardScreen extends OriginScreen {
 		vb.setSpacing(20);
 		
 		int column, row;
-
 		//1から5までのテキストを作りClickButtonイベントを設定する。
 		for (int i = 1; i <= 3; i++) {
 			//Textに表示する文字列(盤面の大きさ）の作成
@@ -59,13 +57,6 @@ public class SelectBoardScreen extends OriginScreen {
 			//VBoxに作成したNodeを追加(Textインスタンス)
 			vb.getChildren().add(bt);
 		}
-		/*//メンバ変数tfにTextFieldインスタンスを生成し代入
-		
-		tf = new TextField();
-		
-		//VBoxに作成したNodeを追加(今回はTextFieldインスタンス)
-		vb.getChildren().add(tf);
-		
 		
 		/*作成したVBoxをもとにSceneインスタンスを生成
 		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
@@ -78,17 +69,11 @@ public class SelectBoardScreen extends OriginScreen {
 		rowTF.setEditable(false);
 		Text midText = new Text("×");
 		size.getChildren().addAll(columnTF, midText, rowTF);
-<<<<<<< Updated upstream
-		Button start = new Button("Start");
-		start.setPrefSize(300, 80);
-=======
 		Button start = new Button("START");
-		start.setPrefSize(300,80);
->>>>>>> Stashed changes
+		start.setPrefSize(300, 80);
 		start.setOnMousePressed(new ClickStart());
 		vb.getChildren().addAll(size, start);
 		scene = new Scene(vb, 400, 300);
-
 	}
 
 	//Textインスタンスがクリックされたときに発生するイベントの定義
@@ -114,7 +99,6 @@ public class SelectBoardScreen extends OriginScreen {
 	}
 
 	class ClickStart implements EventHandler<MouseEvent> {
-
 		@Override
 		public void handle(MouseEvent e) {
 			try {
