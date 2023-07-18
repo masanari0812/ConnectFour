@@ -156,10 +156,11 @@ public class PlayGameScreen extends OriginScreen {
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
 				if (online) {
-					if ((turn == PlayerAffiliation.PLAYER1) == host)
+					if ((turn == PlayerAffiliation.PLAYER1) != host)
 						changeNextScreen(new ResultScreen(true, online, column, row));
 					else
 						changeNextScreen(new ResultScreen(false, online, column, row));
+					
 				} else {
 					if (player == PlayerAffiliation.PLAYER1)
 						changeNextScreen(new ResultScreen(true, online, column, row));
