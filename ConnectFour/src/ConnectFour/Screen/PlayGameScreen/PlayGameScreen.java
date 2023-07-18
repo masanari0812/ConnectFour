@@ -16,6 +16,7 @@ import ConnectFour.Screen.OriginScreen;
 import ConnectFour.Screen.ResultScreen.ResultScreen;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -161,6 +162,7 @@ public class PlayGameScreen extends OriginScreen {
 			Text result = new Text(turn.toString() + " Win!");
 			result.setFont(new Font(25));
 			Button nextScreen = new Button("OK");
+			nextScreen.setFont(new Font(25));
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
 				if (online) {
@@ -177,31 +179,35 @@ public class PlayGameScreen extends OriginScreen {
 				}
 			});
 			VBox sr = new VBox();
+			sr.setSpacing(50);
+			sr.setAlignment(Pos.CENTER);
 			sr.getChildren().addAll(result, nextScreen);
-			simpleResult.setScene(new Scene(sr));
+			simpleResult.setScene(new Scene(sr, 300, 200));
 			simpleResult.show();
+		} else {
+			int count = 0;
+			for (List<PlayerAffiliation> s : boardState)
+				if (s.size() >= row)
+					count++;
+			if (count >= column) {
+				this.end = true;
+				Stage simpleResult = new Stage();
+				Text result = new Text("Draw");
+				result.setFont(new Font(25));
+				Button nextScreen = new Button("OK");
+				nextScreen.setOnMousePressed(event -> {
+					simpleResult.hide();
+					changeNextScreen(new ResultScreen("draw", online, column, row));
+				});
+				VBox sr = new VBox();
+				sr.getChildren().addAll(result, nextScreen);
+				simpleResult.setScene(new Scene(sr));
+				simpleResult.show();
+			} else {
+				changeTurn();
+				reloadBoard();
+			}
 		}
-		int count = 0;
-		for (List<PlayerAffiliation> s : boardState)
-			if (s.size() >= row)
-				count++;
-		if (count >= column) {
-			this.end = true;
-			Stage simpleResult = new Stage();
-			Text result = new Text("Draw");
-			result.setFont(new Font(25));
-			Button nextScreen = new Button("OK");
-			nextScreen.setOnMousePressed(event -> {
-				simpleResult.hide();
-				changeNextScreen(new ResultScreen("draw", online, column, row));
-			});
-			VBox sr = new VBox();
-			sr.getChildren().addAll(result, nextScreen);
-			simpleResult.setScene(new Scene(sr));
-			simpleResult.show();
-		}
-		changeTurn();
-		reloadBoard();
 	}
 
 	// スキルの処理(青色のマスで層を作る)
