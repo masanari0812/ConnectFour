@@ -45,6 +45,7 @@ public class PlayGameScreen extends OriginScreen {
 	private PlayerAffiliation turn;
 	private TextArea chatHistory;
 	private TextField chatBox;
+	private CommunicationThread ct;
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
@@ -54,6 +55,7 @@ public class PlayGameScreen extends OriginScreen {
 		this.end = false;
 		this.skill = true;
 		this.turn = PlayerAffiliation.PLAYER1;
+
 		if (online) {
 			Button stopBT = new Button();
 			stopBT.setOnMousePressed(event -> {
@@ -77,6 +79,8 @@ public class PlayGameScreen extends OriginScreen {
 		System.out.println("d");
 		if (online) {
 			try {
+				CommunicationThread ct = new CommunicationThread();
+				ct.start();
 				if (host) {
 					oos.writeObject(new CommunicationObject(null, column, row).getPacket());
 					oos.flush();
@@ -395,11 +399,6 @@ public class PlayGameScreen extends OriginScreen {
 	}
 
 	public class CommunicationThread extends Thread {
-		private PlayGameScreen pgs;
-
-		public CommunicationThread(PlayGameScreen pgs) {
-			this.pgs = pgs;
-		}
 
 		@Override
 		public void run() {
@@ -412,7 +411,7 @@ public class PlayGameScreen extends OriginScreen {
 					case SetSpace:
 						break;
 					case UseSkill:
-						
+
 						break;
 					case ChatText:
 						chatHistory.appendText(co.getText() + "\n");
