@@ -52,6 +52,7 @@ public class PlayGameScreen extends OriginScreen {
 		this.column = column;
 		this.row = row;
 		this.online = online;
+		this.host = true;
 		this.end = false;
 		this.skill = true;
 		this.turn = PlayerAffiliation.PLAYER1;
@@ -152,8 +153,9 @@ public class PlayGameScreen extends OriginScreen {
 			return;
 		boardState.get(x).add(player);
 		System.out.println(player.toString());
-		reloadBoard();
+
 		if (judgeWin()) {
+			reloadBoard();
 			this.end = true;
 			Stage simpleResult = new Stage();
 			Text result = new Text(turn.toString() + " Win!");
@@ -198,8 +200,8 @@ public class PlayGameScreen extends OriginScreen {
 			simpleResult.setScene(new Scene(sr));
 			simpleResult.show();
 		}
-
 		changeTurn();
+		reloadBoard();
 	}
 
 	// スキルの処理(青色のマスで層を作る)
@@ -249,7 +251,7 @@ public class PlayGameScreen extends OriginScreen {
 			r.setFill(Color.GREY);
 			sideBar.getChildren().add(r);
 		}
-		if (skill) {
+		if (skill && (turn == PlayerAffiliation.PLAYER1) == host) {
 			Button bt = new Button("Skill");
 			bt.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			bt.setOnMousePressed(event -> {
@@ -451,7 +453,6 @@ public class PlayGameScreen extends OriginScreen {
 	}
 
 	public class CommunicationThread extends Thread {
-
 		@Override
 		public void run() {
 			while (online) {
