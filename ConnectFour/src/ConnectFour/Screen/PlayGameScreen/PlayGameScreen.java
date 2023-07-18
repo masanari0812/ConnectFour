@@ -97,6 +97,8 @@ public class PlayGameScreen extends OriginScreen {
 				e.printStackTrace();
 			}
 			this.chatHistory = new TextArea();
+			chatHistory.setFont(new Font(25));
+			chatHistory.setPrefSize(300, row * 20);
 			chatHistory.setEditable(false);
 			this.chatBox = new TextField();
 			chatBox.setOnKeyPressed(event -> {
@@ -204,13 +206,12 @@ public class PlayGameScreen extends OriginScreen {
 	public void activateSkill() {
 		if (online) {
 			if ((turn == PlayerAffiliation.PLAYER1) == host) {
-				if (skill)
+				if (skill) {
+					sendCommunicationObject(new CommunicationObject(0, 0));
 					skill = false;
-				else
+				} else
 					return;
-			} else
-				return;
-
+			}
 		} else {
 			if (turn != PlayerAffiliation.PLAYER1 || !skill)
 				return;
