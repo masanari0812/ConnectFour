@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
+import javafx.application.Platform;
 
 public class ClientManager extends Thread {
 
@@ -41,8 +42,10 @@ public class ClientManager extends Thread {
 				Thread.sleep(100);
 				pgs.setObjectInputStream(socket.getInputStream());
 				System.out.println("!!!");
-				
-				pgs.makeBoard();
+				Platform.runLater(() -> {
+					pgs.makeBoard();
+
+				});
 			} else
 				System.out.println("x");
 			System.out.println(num++);

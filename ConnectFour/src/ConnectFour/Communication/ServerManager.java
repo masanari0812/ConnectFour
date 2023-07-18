@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 
 import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
+import javafx.application.Platform;
 
 public class ServerManager extends Thread {
 
@@ -44,7 +45,10 @@ public class ServerManager extends Thread {
 				Thread.sleep(100);
 				pgs.setObjectInputStream(socket.getInputStream());
 				System.out.println("!!!");
-				pgs.makeBoard();
+				Platform.runLater(() -> {
+					pgs.makeBoard();
+
+				});
 			} else
 				System.out.println("x");
 			while (pgs.getOnline())
@@ -53,11 +57,10 @@ public class ServerManager extends Thread {
 			socket.close();
 			this.interrupt();
 		} catch (SocketTimeoutException e) {
-			System.out.println(num+"!");
+			System.out.println(num + "!");
 			ClientManager cm = new ClientManager(pgs);
 			pgs.setOnlineMgr(cm);
 			cm.start();
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
