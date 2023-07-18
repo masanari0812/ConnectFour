@@ -1,5 +1,6 @@
 package ConnectFour.Screen.DemoScreen;
 
+/*
 import ConnectFour.ConnectFour;
 import ConnectFour.Communication.ClientManager;
 import ConnectFour.Communication.ServerManager;
@@ -104,3 +105,4 @@ public class DemoScreen extends OriginScreen {
 	//通信用デバッグ処理終了
 
 }
+*/

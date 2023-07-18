@@ -1,6 +1,5 @@
 package ConnectFour;
 
-import ConnectFour.Screen.DemoScreen.DemoScreen;
 import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
 import ConnectFour.Screen.ResultScreen.ResultScreen;
 import ConnectFour.Screen.SelectBoardScreen.SelectBoardScreen;
@@ -65,10 +64,12 @@ public class ConnectFour extends Application {
 		@Override
 		public void handle(MouseEvent e) {
 			switch (num) {
+			/*
 			case 1:
 				DemoScreen ds = new DemoScreen();
 				setScene(ds.getScene());
 				break;
+			*/
 			case 2:
 				PlayGameScreen pgs = new PlayGameScreen(false, 7, 6);
 				setScene(pgs.getScene());
