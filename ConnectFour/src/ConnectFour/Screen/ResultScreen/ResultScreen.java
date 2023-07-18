@@ -22,15 +22,15 @@ public class ResultScreen extends OriginScreen {
 		if (playerResult == "win") {
 			result = new Text("Win!!");
 			String rs = "Win";
-			ResultRecordManageMain.ResultRecord(rs);
+			ResultRecordManageMain.resultRecord(rs);
 		} else if (playerResult == "lose"){
 			result = new Text("Lose...");
 			String rs = "Lose";
-			ResultRecordManageMain.ResultRecord(rs);
+			ResultRecordManageMain.resultRecord(rs);
 		} else {
 			result = new Text("Draw");
 			String rs = "Draw";
-			ResultRecordManageMain.ResultRecord(rs);
+			ResultRecordManageMain.resultRecord(rs);
 		}
 
 		BorderPane.setAlignment(result, Pos.CENTER);
@@ -47,7 +47,7 @@ public class ResultScreen extends OriginScreen {
 			changeNextScreen(new SelectModeScreen());
 		});
 		resultShowButton.setOnMousePressed(event -> {
-			ResultRecordManageMain.ResultRecordShow();
+			ResultRecordManageMain.resultRecordShow();
 		});
 
 		continueButton.setFont(new Font(25));
