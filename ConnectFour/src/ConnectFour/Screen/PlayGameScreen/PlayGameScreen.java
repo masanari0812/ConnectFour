@@ -14,7 +14,6 @@ import ConnectFour.Communication.CommunicationObject;
 import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
 import ConnectFour.Screen.ResultScreen.ResultScreen;
-import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -58,16 +57,21 @@ public class PlayGameScreen extends OriginScreen {
 		this.turn = PlayerAffiliation.PLAYER1;
 
 		if (online) {
-			Button stopBT = new Button();
+			/*
+			Button stopBT = new Button("Stop Matching");
+			stopBT.setFont(new Font(20));
 			stopBT.setOnMousePressed(event -> {
+				this.online=false;
 				if (onlineMgr != null)
 					onlineMgr.interrupt();
 				changeNextScreen(new SelectModeScreen());
-			});
+			})
+			bp.setBottom(stopBT);
+			*/;
 			Text text = new Text("Matching now");
+			text.setFont(new Font(30));
 			BorderPane bp = new BorderPane();
 			bp.setCenter(text);
-			bp.setBottom(stopBT);
 			scene = new Scene(bp, 400, 300);
 			onlineMgr = new ServerManager(this);
 			onlineMgr.start();

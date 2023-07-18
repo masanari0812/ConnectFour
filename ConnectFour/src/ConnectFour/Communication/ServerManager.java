@@ -12,7 +12,7 @@ import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
 import javafx.application.Platform;
 
 public class ServerManager extends Thread {
-
+	private ServerSocket serverSocket;
 	private Socket socket;
 	private PlayGameScreen pgs;
 	private int num = 0;
@@ -26,7 +26,7 @@ public class ServerManager extends Thread {
 	public void run() {
 		try {
 			System.out.println(num++);
-			ServerSocket serverSocket = new ServerSocket(8782);
+			this.serverSocket = new ServerSocket(8782);
 			InetAddress localhost = InetAddress.getLocalHost();
 			DatagramSocket handShakeSocket = new DatagramSocket();
 			InetAddress broadcastAddress = InetAddress.getByName("255.255.255.255");
@@ -47,7 +47,6 @@ public class ServerManager extends Thread {
 				System.out.println("!!!");
 				Platform.runLater(() -> {
 					pgs.makeBoard();
-
 				});
 			} else
 				System.out.println("x");
@@ -58,14 +57,27 @@ public class ServerManager extends Thread {
 			this.interrupt();
 		} catch (SocketTimeoutException e) {
 			System.out.println(num + "!");
+			if(pgs.getOnline()!=false)
+				this.interrupt();
 			ClientManager cm = new ClientManager(pgs);
 			pgs.setOnlineMgr(cm);
 			cm.start();
+			this.interrupt();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+		}finally  {
+			System.out.println("Dis");
+			try {
+			if(serverSocket!=null)
+				serverSocket.close();
+			if(socket!=null)
+				socket.close();
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

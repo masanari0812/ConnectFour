@@ -10,7 +10,7 @@ import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
 import javafx.application.Platform;
 
 public class ClientManager extends Thread {
-
+	private DatagramSocket handShakeSocket;
 	private Socket socket;
 	private PlayGameScreen pgs;
 	private int num = 0;
@@ -24,7 +24,7 @@ public class ClientManager extends Thread {
 	public void run() {
 		try {
 			System.out.println(num++);
-			DatagramSocket handShakeSocket = new DatagramSocket(1182);
+			this.handShakeSocket = new DatagramSocket(1182);
 			byte[] receiveData = new byte[InetAddress.getLocalHost().getAddress().length];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			handShakeSocket.receive(receivePacket);
@@ -56,6 +56,16 @@ public class ClientManager extends Thread {
 		} catch (IOException | InterruptedException e) {
 			System.out.println(num + "!");
 			e.printStackTrace();
+		} finally {
+			System.out.println("Dis");
+			try {
+				if(handShakeSocket!=null)
+					handShakeSocket.close();
+				if (socket != null)
+					socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
