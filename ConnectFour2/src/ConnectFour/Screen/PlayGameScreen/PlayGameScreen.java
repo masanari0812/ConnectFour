@@ -7,12 +7,14 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ConnectFour.ConnectFour;
 import ConnectFour.Communication.CommunicationObject;
 import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
-import javafx.event.ActionEvent;
+import ConnectFour.Screen.ResultScreen.ResultScreen;
+import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,33 +25,45 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class PlayGameScreen extends OriginScreen {
 	private List<List<PlayerAffiliation>> boardState;
 	private int column, row;
-	private int used_skill = 0; // スキルを使用した回数を判断する変数
+	private boolean skill; // スキルを使用した回数を判断する変数
 	private boolean online;
 	private boolean host;
+	private boolean end;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	private Thread onlineMgr;
+	private PlayerAffiliation turn;
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
+		this.column = column;
+		this.row = row;
 		this.online = online;
+		this.end = false;
+		this.skill = true;
+		this.turn = PlayerAffiliation.PLAYER1;
 		if (online) {
-			Button stopBT = new Button("Stop Matching");
+			Button stopBT = new Button();
+			stopBT.setOnMousePressed(event -> {
+				if (onlineMgr != null)
+					onlineMgr.interrupt();
+				changeNextScreen(new SelectModeScreen());
+			});
 			Text text = new Text("Matching now");
 			BorderPane bp = new BorderPane();
 			bp.setCenter(text);
 			bp.setBottom(stopBT);
-			ConnectFour.getStage().setScene(new Scene(bp, 400, 300));
-			onlineMgr =new ServerManager(this);
+			scene = new Scene(bp, 400, 300);
+			onlineMgr = new ServerManager(this);
 			onlineMgr.start();
 		} else {
-			this.column = column;
-			this.row = row;
 			makeBoard();
 		}
 	}
@@ -59,17 +73,14 @@ public class PlayGameScreen extends OriginScreen {
 		if (online) {
 			try {
 				if (host) {
-					oos.writeObject(new CommunicationObject("Player1", column, row));
+					oos.writeObject(new CommunicationObject(null, column, row).getPacket());
 					oos.flush();
 				} else {
-					while (true) {
-						CommunicationObject size = (CommunicationObject) ois.readObject();
-						if(size==null)
-							continue;
-						column = size.getX();
-						row = size.getY();
-						break;
-					}
+					String packet = (String)ois.readObject();
+					System.out.println(packet);
+					CommunicationObject size = new CommunicationObject(packet);
+					column = size.getX();
+					row = size.getY();
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
@@ -112,27 +123,41 @@ public class PlayGameScreen extends OriginScreen {
 
 	// x 列の一番下のマスを染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x) {
-		if (player == PlayerAffiliation.NONE)
+		if (player != turn || end)
 			return;
 		boardState.get(x).add(player);
-		System.out.println(String.valueOf(x) + " " + String.valueOf(boardState.get(x).size()));
+		System.out.println(player.toString());
 		reloadBoard();
+		if (judgeWin()) {
+			this.end = true;
+			Stage simpleResult = new Stage();
+			Text result = new Text(turn.toString() + " Win!");
+			result.setFont(new Font(25));
+			Button nextScreen = new Button("OK");
+			nextScreen.setOnMousePressed(event -> {
+				simpleResult.hide();
+				if (player == PlayerAffiliation.PLAYER1)
+					changeNextScreen(new ResultScreen(true, online, column, row));
+				else
+					changeNextScreen(new ResultScreen(false, online, column, row));
+			});
+			VBox sr = new VBox();
+			sr.getChildren().addAll(result, nextScreen);
+			simpleResult.setScene(new Scene(sr));
+			simpleResult.show();
+		}
+		changeTurn();
 	}
 
 	// スキルの処理(青色のマスで層を作る)
-	public void activateSkill(List<List<PlayerAffiliation>> boardState) {
-		used_skill += 1;
-		int count;
-
-		for (int x = 0; x < column; x++) {
-			count = 0;
-			for (int y = 0; y < row; y++) {
-				if (count == 0 && boardState.get(x).get(row - 1 - y) == PlayerAffiliation.NONE) {
-					setSpace(PlayerAffiliation.BLOCK, x, row - 1 - y);
-					count += 1;
-				}
-			}
-		}
+	public void activateSkill() {
+		if (turn != PlayerAffiliation.PLAYER1 || !skill)
+			return;
+		this.skill = false;
+		for (int x = 0; x < column; x++)
+			if (getFirstNoneSpace(x) != row)
+				boardState.get(x).add(PlayerAffiliation.BLOCK);
+		changeTurn();
 		reloadBoard();
 	}
 
@@ -154,17 +179,16 @@ public class PlayGameScreen extends OriginScreen {
 		}
 
 		VBox sideBar = new VBox();
-		if (used_skill != 2) {
+		Rectangle r = new Rectangle(40, 50, 120, 360);
+		r.setFill(Color.GREY);
+		sideBar.getChildren().add(r);
+		if (skill) {
 			Button bt = new Button("Skill");
 			bt.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			Rectangle r = new Rectangle(40, 50, 120, 360);
-			r.setFill(Color.GREY);
-			sideBar.getChildren().addAll(r, bt);
-			bt.setOnAction(new ClickButtonEventHandler(boardState));
-		} else {
-			Rectangle r = new Rectangle(40, 50, 120, 360);
-			r.setFill(Color.GREY);
-			sideBar.getChildren().add(r);
+			bt.setOnMousePressed(event -> {
+				activateSkill();
+			});
+			sideBar.getChildren().add(bt);
 		}
 		hb.getChildren().add(sideBar);
 		this.scene = new Scene(hb);
@@ -274,14 +298,45 @@ public class PlayGameScreen extends OriginScreen {
 
 	public void setObjectInputStream(InputStream is) throws IOException {
 		this.ois = new ObjectInputStream(is);
+
 	}
 
 	public void setObjectOutputStream(OutputStream os) throws IOException {
 		this.oos = new ObjectOutputStream(os);
 	}
-	
+
 	public void setOnlineMgr(Thread t) {
-		this.onlineMgr=t;
+		this.onlineMgr = t;
+	}
+
+	public void changeTurn() {
+		switch (turn) {
+		case PLAYER1:
+			this.turn = PlayerAffiliation.PLAYER2;
+			setComTrout();
+			break;
+		case PLAYER2:
+			this.turn = PlayerAffiliation.PLAYER1;
+			break;
+		default:
+			break;
+		}
+	}
+
+	public boolean judgeWin() {
+		if (countRowSpace(turn) > 0 || countColumnSpace(turn) > 0 || countRightSlashSpace(turn) > 0
+				|| countLeftSlashSpace(turn) > 0)
+			return true;
+		return false;
+	}
+
+	public void setComTrout() {
+		Random rand = new Random();
+		int x = rand.nextInt(column);
+		while (getFirstNoneSpace(x) == row)
+			x = rand.nextInt(column);
+		;
+		setSpace(PlayerAffiliation.PLAYER2, x);
 	}
 
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
@@ -300,27 +355,12 @@ public class PlayGameScreen extends OriginScreen {
 
 		@Override
 		public void handle(MouseEvent e) {
-			if (e.isPrimaryButtonDown())
+			if (e.isPrimaryButtonDown() && getFirstNoneSpace(x) != row) {
 				setSpace(PlayerAffiliation.PLAYER1, x);
-			else if (e.isSecondaryButtonDown())
-				setSpace(PlayerAffiliation.PLAYER2, x);
+			} else if (e.isSecondaryButtonDown())
+				;//setSpace(PlayerAffiliation.PLAYER2, x);
 			System.out.println(String.valueOf(x) + " " + String.valueOf(y));
 
-		}
-	}
-
-	// Skillボタンをクリックしたらスキルの効果を反映させる処理
-	class ClickButtonEventHandler implements EventHandler<ActionEvent> {
-		private List<List<PlayerAffiliation>> boardState;
-
-		public ClickButtonEventHandler(List<List<PlayerAffiliation>> boardState) { // 盤面の情報を受け取る
-			this.boardState = boardState;
-		}
-
-		@Override
-		public void handle(ActionEvent e) {
-			activateSkill(boardState);
-			System.out.println("activate skill");
 		}
 	}
 

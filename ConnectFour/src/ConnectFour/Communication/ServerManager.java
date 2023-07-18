@@ -42,6 +42,7 @@ public class ServerManager extends Thread {
 				pgs.setHost(true);
 				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
+				System.out.println("!!!");
 				pgs.makeBoard();
 			} else
 				System.out.println("x");

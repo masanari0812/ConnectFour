@@ -1,25 +1,21 @@
 package ConnectFour.Screen.ResultScreen;
 import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ResultRecordManageMain {
 	String rs;
+	
 	ResultRecordManageMain(String rs) {
 		this.rs = rs;
+		ResultRecord(rs);
 	}
 	
 	ResultRecordManageMain() {
-		
+		ResultRecordShow();
 	}
 
    public static void ResultRecord (String rs) {
@@ -28,32 +24,15 @@ public class ResultRecordManageMain {
          LocalDateTime Now = LocalDateTime.now();
          DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
          String NowTime = dtformat.format(Now);
-
-         //result.txtを読み込む
-         BufferedReader br =
-         new BufferedReader(
-            new InputStreamReader(
-               new FileInputStream("result.txt"), "UTF-8"));
-
-         //result.txt
-         PrintWriter pw =
-         new PrintWriter(
-            new BufferedWriter(
-               new OutputStreamWriter (
-                  new FileOutputStream("result.txt"), "UTF-8")));
-
-         //result.txtを、一番下の行まで進める
-         String line;
-         while ((line = br.readLine()) != null) {
-            pw.println(line);
-         }
+         
+         //result.txtを開く
+         FileWriter fw = new FileWriter("result.txt", true);
 
          //一番下の行に、結果を追加
-         pw.println(NowTime + " " + rs);
+         fw.write(NowTime + " " + rs + "\n");
 
          //result.txtを閉じる
-         br.close();
-         pw.close();
+         fw.close();
       } catch (IOException e) {
          e.printStackTrace();
       }

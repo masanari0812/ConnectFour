@@ -9,8 +9,6 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ConnectFour extends Application {
@@ -23,6 +21,7 @@ public class ConnectFour extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		setStage(stage);
+		/*
 		VBox vb = new VBox();
 		vb.setSpacing(20);
 		for (int i = 1; i <= 5; i++) {
@@ -35,7 +34,8 @@ public class ConnectFour extends Application {
 			//VBoxに作成したNodeを追加(今回はTextインスタンス)
 			vb.getChildren().add(text);
 		}
-		setScene(new Scene(vb,400,300));
+		*/
+		setScene(new SelectModeScreen().getScene());
 		stage.setTitle("ConnectFour");
 		stage.show();
 	}
@@ -70,11 +70,11 @@ public class ConnectFour extends Application {
 				setScene(ds.getScene());
 				break;
 			case 2:
-				PlayGameScreen pgs = new PlayGameScreen(false,7, 6);
+				PlayGameScreen pgs = new PlayGameScreen(false, 7, 6);
 				setScene(pgs.getScene());
 				break;
 			case 3:
-				ResultScreen rs = new ResultScreen();
+				ResultScreen rs = new ResultScreen(true,false,7,6);
 				setScene(rs.getScene());
 				break;
 			case 4:
