@@ -82,8 +82,7 @@ public class PlayGameScreen extends OriginScreen {
 				CommunicationThread ct = new CommunicationThread();
 				ct.start();
 				if (host) {
-					oos.writeObject(new CommunicationObject(null, column, row).getPacket());
-					oos.flush();
+					sendCommunicationObject(new CommunicationObject(null,column,row));
 				} else {
 					String packet = (String) ois.readObject();
 					System.out.println(packet);
@@ -101,6 +100,7 @@ public class PlayGameScreen extends OriginScreen {
 					// エンターキーが押されたときの処理を記述する
 					if (host)
 						chatHistory.appendText("You: " + chatBox.getText() + "\n");
+					sendCommunicationObject(new CommunicationObject(chatBox.getText()));
 					chatBox.clear();
 					System.out.println("エンターキーが押されました。入力値: " + chatBox.getText());
 				}
