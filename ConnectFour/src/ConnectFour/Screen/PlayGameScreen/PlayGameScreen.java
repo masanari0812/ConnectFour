@@ -15,6 +15,7 @@ import ConnectFour.Communication.ServerManager;
 import ConnectFour.Screen.OriginScreen;
 import ConnectFour.Screen.ResultScreen.ResultScreen;
 import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -452,10 +453,12 @@ public class PlayGameScreen extends OriginScreen {
 					case FirstInfo:
 						break;
 					case SetSpace:
+						Platform.runLater(() -> {
 						if (host)
 							setSpace(PlayerAffiliation.PLAYER2, co.getX());
 						else
 							setSpace(PlayerAffiliation.PLAYER1, co.getX());
+						});
 						break;
 					case UseSkill:
 						activateSkill();
