@@ -16,7 +16,7 @@ public class ResultScreen extends OriginScreen {
 	private Button button1;
 	private Button resultButton;
 
-	public ResultScreen(boolean win, boolean online, int column, int row) {
+	public ResultScreen(String win, boolean online, int column, int row) {
 		Text result;
 		if (win) {
 			result = new Text("Win!!");
