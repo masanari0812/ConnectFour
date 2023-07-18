@@ -67,7 +67,7 @@ public class PlayGameScreen extends OriginScreen {
 				changeNextScreen(new SelectModeScreen());
 			})
 			bp.setBottom(stopBT);
-			*/;
+			*/
 			Text text = new Text("Matching now");
 			text.setFont(new Font(30));
 			BorderPane bp = new BorderPane();
@@ -161,15 +161,15 @@ public class PlayGameScreen extends OriginScreen {
 				simpleResult.hide();
 				if (online) {
 					if ((turn == PlayerAffiliation.PLAYER1) != host)
-						changeNextScreen(new ResultScreen(true, online, column, row));
+						changeNextScreen(new ResultScreen("勝ち", online, column, row));
 					else
-						changeNextScreen(new ResultScreen(false, online, column, row));
+						changeNextScreen(new ResultScreen("負け", online, column, row));
 
 				} else {
 					if (player == PlayerAffiliation.PLAYER1)
-						changeNextScreen(new ResultScreen(true, online, column, row));
+						changeNextScreen(new ResultScreen("勝ち", online, column, row));
 					else
-						changeNextScreen(new ResultScreen(false, online, column, row));
+						changeNextScreen(new ResultScreen("負け", online, column, row));
 				}
 			});
 			VBox sr = new VBox();
@@ -189,7 +189,7 @@ public class PlayGameScreen extends OriginScreen {
 			Button nextScreen = new Button("OK");
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
-				changeNextScreen(new ResultScreen(true, online, column, row));
+				changeNextScreen(new ResultScreen("引き分け", online, column, row));
 			});
 			VBox sr = new VBox();
 			sr.getChildren().addAll(result, nextScreen);
