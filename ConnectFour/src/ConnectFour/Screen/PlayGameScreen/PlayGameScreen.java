@@ -79,17 +79,15 @@ public class PlayGameScreen extends OriginScreen {
 		System.out.println("d");
 		if (online) {
 			try {
-				CommunicationThread ct = new CommunicationThread();
-				ct.start();
 				if (host) {
 					sendCommunicationObject(new CommunicationObject(null,column,row));
 				} else {
-					String packet = (String) ois.readObject();
-					System.out.println(packet);
-					CommunicationObject size = new CommunicationObject(packet);
+					CommunicationObject size = (CommunicationObject) ois.readObject();
 					column = size.getX();
 					row = size.getY();
 				}
+				CommunicationThread ct = new CommunicationThread();
+				ct.start();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
