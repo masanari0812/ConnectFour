@@ -85,7 +85,7 @@ public class CommunicationObject implements Serializable {
 		return packet;
 	}
 	
-	private enum TypeObject {
+	public enum TypeObject {
 		FirstInfo, SetSpace, UseSkill, ChatText,
 	}
 }

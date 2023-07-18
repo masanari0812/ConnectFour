@@ -18,6 +18,9 @@ import ConnectFour.Screen.SelectModeScreen.SelectModeScreen;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -40,6 +43,8 @@ public class PlayGameScreen extends OriginScreen {
 	private ObjectOutputStream oos;
 	private Thread onlineMgr;
 	private PlayerAffiliation turn;
+	private TextArea chatHistory;
+	private TextField chatBox;
 
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
@@ -76,7 +81,7 @@ public class PlayGameScreen extends OriginScreen {
 					oos.writeObject(new CommunicationObject(null, column, row).getPacket());
 					oos.flush();
 				} else {
-					String packet = (String)ois.readObject();
+					String packet = (String) ois.readObject();
 					System.out.println(packet);
 					CommunicationObject size = new CommunicationObject(packet);
 					column = size.getX();
@@ -85,6 +90,17 @@ public class PlayGameScreen extends OriginScreen {
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
+			this.chatHistory = new TextArea();
+			this.chatBox = new TextField();
+			chatBox.setOnKeyPressed(event -> {
+				if (event.getCode() == KeyCode.ENTER) {
+					// エンターキーが押されたときの処理を記述する
+					if (host)
+						chatHistory.appendText("You: " + chatBox.getText() + "\n");
+					chatBox.clear();
+					System.out.println("エンターキーが押されました。入力値: " + chatBox.getText());
+				}
+			});
 		}
 		System.out.println("d");
 		boardState = new ArrayList<>();
@@ -179,9 +195,14 @@ public class PlayGameScreen extends OriginScreen {
 		}
 
 		VBox sideBar = new VBox();
-		Rectangle r = new Rectangle(40, 50, 120, 360);
-		r.setFill(Color.GREY);
-		sideBar.getChildren().add(r);
+		if (online) {
+
+			sideBar.getChildren().addAll(chatHistory, chatBox);
+		} else {
+			Rectangle r = new Rectangle(40, 50, 120, 360);
+			r.setFill(Color.GREY);
+			sideBar.getChildren().add(r);
+		}
 		if (skill) {
 			Button bt = new Button("Skill");
 			bt.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -361,6 +382,46 @@ public class PlayGameScreen extends OriginScreen {
 				;//setSpace(PlayerAffiliation.PLAYER2, x);
 			System.out.println(String.valueOf(x) + " " + String.valueOf(y));
 
+		}
+	}
+
+	public void sendCommunicationObject(CommunicationObject co) {
+		try {
+			oos.writeObject(co);
+			oos.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public class CommunicationThread extends Thread {
+		private PlayGameScreen pgs;
+
+		public CommunicationThread(PlayGameScreen pgs) {
+			this.pgs = pgs;
+		}
+
+		@Override
+		public void run() {
+			while (online) {
+				try {
+					CommunicationObject co = (CommunicationObject) ois.readObject();
+					switch (co.getTypeObject()) {
+					case FirstInfo:
+						break;
+					case SetSpace:
+						break;
+					case UseSkill:
+						
+						break;
+					case ChatText:
+						chatHistory.appendText(co.getText() + "\n");
+						break;
+					}
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
