@@ -80,24 +80,24 @@ public class PlayGameScreen extends OriginScreen {
 		if (online) {
 			try {
 				if (host) {
-					sendCommunicationObject(new CommunicationObject(null,column,row));
+					sendCommunicationObject(new CommunicationObject(null, column, row));
 				} else {
 					CommunicationObject size = (CommunicationObject) ois.readObject();
 					column = size.getX();
 					row = size.getY();
 				}
-				CommunicationThread ct = new CommunicationThread();
+				this.ct = new CommunicationThread();
 				ct.start();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 			this.chatHistory = new TextArea();
+			chatHistory.setEditable(false);
 			this.chatBox = new TextField();
 			chatBox.setOnKeyPressed(event -> {
 				if (event.getCode() == KeyCode.ENTER) {
 					// エンターキーが押されたときの処理を記述する
-					if (host)
-						chatHistory.appendText("You: " + chatBox.getText() + "\n");
+					chatHistory.appendText("You: " + chatBox.getText() + "\n");
 					sendCommunicationObject(new CommunicationObject(chatBox.getText()));
 					chatBox.clear();
 					System.out.println("エンターキーが押されました。入力値: " + chatBox.getText());
@@ -154,24 +154,60 @@ public class PlayGameScreen extends OriginScreen {
 			Button nextScreen = new Button("OK");
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
-				if (player == PlayerAffiliation.PLAYER1)
-					changeNextScreen(new ResultScreen(true, online, column, row));
-				else
-					changeNextScreen(new ResultScreen(false, online, column, row));
+				if (online) {
+					if ((turn == PlayerAffiliation.PLAYER1) == host)
+						changeNextScreen(new ResultScreen(true, online, column, row));
+					else
+						changeNextScreen(new ResultScreen(false, online, column, row));
+				} else {
+					if (player == PlayerAffiliation.PLAYER1)
+						changeNextScreen(new ResultScreen(true, online, column, row));
+					else
+						changeNextScreen(new ResultScreen(false, online, column, row));
+				}
 			});
 			VBox sr = new VBox();
 			sr.getChildren().addAll(result, nextScreen);
 			simpleResult.setScene(new Scene(sr));
 			simpleResult.show();
 		}
+		int count = 0;
+		for (List<PlayerAffiliation> s : boardState)
+			if (s.size() >= row)
+				count++;
+		if (count >= column) {
+			this.end = true;
+			Stage simpleResult = new Stage();
+			Text result = new Text("Draw");
+			result.setFont(new Font(25));
+			Button nextScreen = new Button("OK");
+			nextScreen.setOnMousePressed(event -> {
+				simpleResult.hide();
+				changeNextScreen(new ResultScreen(true, online, column, row));
+			});
+			VBox sr = new VBox();
+			sr.getChildren().addAll(result, nextScreen);
+			simpleResult.setScene(new Scene(sr));
+			simpleResult.show();
+		}
+
 		changeTurn();
 	}
 
 	// スキルの処理(青色のマスで層を作る)
 	public void activateSkill() {
-		if (turn != PlayerAffiliation.PLAYER1 || !skill)
-			return;
-		this.skill = false;
+		if (online) {
+			if ((turn == PlayerAffiliation.PLAYER1) == host) {
+				if (skill)
+					skill = false;
+				else
+					return;
+			}
+		} else {
+			if (turn != PlayerAffiliation.PLAYER1 || !skill)
+				return;
+			this.skill = false;
+		}
 		for (int x = 0; x < column; x++)
 			if (getFirstNoneSpace(x) != row)
 				boardState.get(x).add(PlayerAffiliation.BLOCK);
@@ -198,7 +234,6 @@ public class PlayGameScreen extends OriginScreen {
 
 		VBox sideBar = new VBox();
 		if (online) {
-
 			sideBar.getChildren().addAll(chatHistory, chatBox);
 		} else {
 			Rectangle r = new Rectangle(40, 50, 120, 360);
@@ -336,7 +371,8 @@ public class PlayGameScreen extends OriginScreen {
 		switch (turn) {
 		case PLAYER1:
 			this.turn = PlayerAffiliation.PLAYER2;
-			setComTrout();
+			if (!online)
+				setComTrout();
 			break;
 		case PLAYER2:
 			this.turn = PlayerAffiliation.PLAYER1;
@@ -378,12 +414,21 @@ public class PlayGameScreen extends OriginScreen {
 
 		@Override
 		public void handle(MouseEvent e) {
-			if (e.isPrimaryButtonDown() && getFirstNoneSpace(x) != row) {
-				setSpace(PlayerAffiliation.PLAYER1, x);
-			} else if (e.isSecondaryButtonDown())
-				;//setSpace(PlayerAffiliation.PLAYER2, x);
-			System.out.println(String.valueOf(x) + " " + String.valueOf(y));
+			if (online) {
+				if (e.isPrimaryButtonDown() && getFirstNoneSpace(x) != row
+						&& (turn == PlayerAffiliation.PLAYER1) == host) {
+					sendCommunicationObject(new CommunicationObject(x));
+					if (host) {
+						setSpace(PlayerAffiliation.PLAYER1, x);
+					} else {
 
+						setSpace(PlayerAffiliation.PLAYER2, x);
+					}
+				}
+
+			} else if (e.isPrimaryButtonDown() && getFirstNoneSpace(x) != row) {
+				setSpace(PlayerAffiliation.PLAYER1, x);
+			}
 		}
 	}
 
@@ -407,9 +452,13 @@ public class PlayGameScreen extends OriginScreen {
 					case FirstInfo:
 						break;
 					case SetSpace:
+						if (host)
+							setSpace(PlayerAffiliation.PLAYER2, co.getX());
+						else
+							setSpace(PlayerAffiliation.PLAYER1, co.getX());
 						break;
 					case UseSkill:
-
+						activateSkill();
 						break;
 					case ChatText:
 						chatHistory.appendText(co.getText() + "\n");
