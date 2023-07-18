@@ -40,8 +40,9 @@ public class ServerManager extends Thread {
 			serverSocket.close();
 			if (socket.isConnected()) {
 				pgs.setHost(true);
-				pgs.setObjectInputStream(socket.getInputStream());
 				pgs.setObjectOutputStream(socket.getOutputStream());
+				Thread.sleep(100);
+				pgs.setObjectInputStream(socket.getInputStream());
 				System.out.println("!!!");
 				pgs.makeBoard();
 			} else
@@ -58,6 +59,9 @@ public class ServerManager extends Thread {
 			cm.start();
 
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 	}
