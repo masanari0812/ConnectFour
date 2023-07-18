@@ -12,46 +12,56 @@ import javafx.scene.text.Text;
 
 public class ResultScreen extends OriginScreen {
 
-	private Button button;
-	private Button button1;
-	private Button resultButton;
+	private Button continueButton;
+	private Button selectModeBbutton;
+	private Button resultShowButton;
 
-	public ResultScreen(String win, boolean online, int column, int row) {
+	public ResultScreen(String playerResult, boolean online, int column, int row) {
 		Text result;
-		if (win) {
+
+		if (playerResult == "win") {
 			result = new Text("Win!!");
 			String rs = "Win";
 			ResultRecordManageMain.ResultRecord(rs);
-		} else {
+		} else if (playerResult == "lose"){
 			result = new Text("Lose...");
 			String rs = "Lose";
 			ResultRecordManageMain.ResultRecord(rs);
+		} else {
+			result = new Text("Draw");
+			String rs = "Draw";
+			ResultRecordManageMain.ResultRecord(rs);
 		}
+
 		BorderPane.setAlignment(result, Pos.CENTER);
 		result.setFont(new Font(25));
-		button = new Button("続ける");
-		button1 = new Button("モード選択");
-		resultButton = new Button("対戦記録表示");
-		button.setOnMousePressed(event -> {
+
+		continueButton = new Button("続ける");
+		selectModeBbutton = new Button("モード選択");
+		resultShowButton = new Button("対戦記録表示");
+
+		continueButton.setOnMousePressed(event -> {
 			changeNextScreen(new PlayGameScreen(online, column, row));
 		});
-		button1.setOnMousePressed(event -> {
+		selectModeBbutton.setOnMousePressed(event -> {
 			changeNextScreen(new SelectModeScreen());
 		});
-		resultButton.setOnMousePressed(event -> {
+		resultShowButton.setOnMousePressed(event -> {
 			ResultRecordManageMain.ResultRecordShow();
 		});
-		button.setFont(new Font(25));
+
+		continueButton.setFont(new Font(25));
 		//buttonの文字の大きさを25にする
-		button1.setFont(new Font(25));
+		selectModeBbutton.setFont(new Font(25));
 		//button1の文字の大きさを25にする
-		resultButton.setFont(new Font(15));
+		resultShowButton.setFont(new Font(15));
 		//resultButtonの文字の大きさを25にする
+
 		BorderPane bp = new BorderPane();
 		bp.setCenter(result);
-		bp.setLeft(button);
-		bp.setRight(button1);
-		bp.setBottom(resultButton);
+		bp.setLeft(continueButton);
+		bp.setRight(selectModeBbutton);
+		bp.setBottom(resultShowButton);
 		/*//button.setOnAction(new MousePressedHandler());
 		
 		//継承元のOriginScreenにあるscene変数に格納 */
