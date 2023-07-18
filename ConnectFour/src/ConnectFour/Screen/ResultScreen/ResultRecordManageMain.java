@@ -7,49 +7,54 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ResultRecordManageMain {
-	String rs;
+	String result;
 	
-	ResultRecordManageMain(String rs) {
-		this.rs = rs;
-		ResultRecord(rs);
+	ResultRecordManageMain(String result) {
+		this.result = result;
+		resultRecord(result);
 	}
 	
 	ResultRecordManageMain() {
-		ResultRecordShow();
+		resultRecordShow();
 	}
 
-   public static void ResultRecord (String rs) {
+   public static void resultRecord (String result) {
       try {
          //現在時刻を取得し、yyyy/MM/dd HH:mm:ssのフォーマットに設定
-         LocalDateTime Now = LocalDateTime.now();
-         DateTimeFormatter dtformat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-         String NowTime = dtformat.format(Now);
+         LocalDateTime now = LocalDateTime.now();
+         DateTimeFormatter nowTimeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+         String nowTime = nowTimeFormat.format(now);
          
          //result.txtを開く
-         FileWriter fw = new FileWriter("result.txt", true);
+         FileWriter resultWriter = new FileWriter("result.txt", true);
 
          //一番下の行に、結果を追加
-         fw.write(NowTime + " " + rs + "\n");
+         resultWriter.write(nowTime + " " + result + "\n");
 
          //result.txtを閉じる
-         fw.close();
-      } catch (IOException e) {
-         e.printStackTrace();
+         resultWriter.close();
+      } catch (IOException error) {
+         error.printStackTrace();
       }
    }
 	
-	public static void ResultRecordShow () {
+	public static void resultRecordShow () {
       try {
-            File file = new File("result.txt");
+            File resultText = new File("result.txt");
+            
+            //サポートされていない場合の処理
             if(!Desktop.isDesktopSupported()){
                System.out.println("not supported");
                return;
             }
+            
             Desktop desktop = Desktop.getDesktop();
-            if(file.exists())
-               desktop.open(file);
-      } catch(Exception e) {
-         e.printStackTrace();
+            
+            if(resultText.exists()) {
+               desktop.open(resultText);
+            }
+      } catch(Exception error) {
+         error.printStackTrace();
       }
 	}
 
