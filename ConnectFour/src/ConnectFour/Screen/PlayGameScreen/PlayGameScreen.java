@@ -161,15 +161,15 @@ public class PlayGameScreen extends OriginScreen {
 				simpleResult.hide();
 				if (online) {
 					if ((turn == PlayerAffiliation.PLAYER1) != host)
-						changeNextScreen(new ResultScreen("勝ち", online, column, row));
+						changeNextScreen(new ResultScreen("Win!!", online, column, row));
 					else
-						changeNextScreen(new ResultScreen("負け", online, column, row));
+						changeNextScreen(new ResultScreen("Lose...", online, column, row));
 
 				} else {
 					if (player == PlayerAffiliation.PLAYER1)
-						changeNextScreen(new ResultScreen("勝ち", online, column, row));
+						changeNextScreen(new ResultScreen("Win!!", online, column, row));
 					else
-						changeNextScreen(new ResultScreen("負け", online, column, row));
+						changeNextScreen(new ResultScreen("Lose...", online, column, row));
 				}
 			});
 			VBox sr = new VBox();
@@ -189,7 +189,7 @@ public class PlayGameScreen extends OriginScreen {
 			Button nextScreen = new Button("OK");
 			nextScreen.setOnMousePressed(event -> {
 				simpleResult.hide();
-				changeNextScreen(new ResultScreen("引き分け", online, column, row));
+				changeNextScreen(new ResultScreen("Draw", online, column, row));
 			});
 			VBox sr = new VBox();
 			sr.getChildren().addAll(result, nextScreen);
