@@ -160,7 +160,7 @@ public class PlayGameScreen extends OriginScreen {
 						changeNextScreen(new ResultScreen(true, online, column, row));
 					else
 						changeNextScreen(new ResultScreen(false, online, column, row));
-					
+
 				} else {
 					if (player == PlayerAffiliation.PLAYER1)
 						changeNextScreen(new ResultScreen(true, online, column, row));
@@ -204,7 +204,9 @@ public class PlayGameScreen extends OriginScreen {
 					skill = false;
 				else
 					return;
-			}
+			} else
+				return;
+
 		} else {
 			if (turn != PlayerAffiliation.PLAYER1 || !skill)
 				return;
@@ -455,10 +457,10 @@ public class PlayGameScreen extends OriginScreen {
 						break;
 					case SetSpace:
 						Platform.runLater(() -> {
-						if (host)
-							setSpace(PlayerAffiliation.PLAYER2, co.getX());
-						else
-							setSpace(PlayerAffiliation.PLAYER1, co.getX());
+							if (host)
+								setSpace(PlayerAffiliation.PLAYER2, co.getX());
+							else
+								setSpace(PlayerAffiliation.PLAYER1, co.getX());
 						});
 						break;
 					case UseSkill:
