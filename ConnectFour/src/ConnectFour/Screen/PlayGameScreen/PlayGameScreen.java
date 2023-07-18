@@ -469,7 +469,9 @@ public class PlayGameScreen extends OriginScreen {
 						});
 						break;
 					case UseSkill:
-						activateSkill();
+						Platform.runLater(() -> {
+							activateSkill();
+						});
 						break;
 					case ChatText:
 						chatHistory.appendText(co.getText() + "\n");
