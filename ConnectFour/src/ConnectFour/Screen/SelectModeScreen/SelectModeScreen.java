@@ -1,3 +1,11 @@
+/*******************************************************************
+*** File Name            : SelectModeScreen.java
+*** Designer             : 新井田　俊輔
+*** Date                 : 2023.07.18
+*** Purpose              : ゲームをプレイする人数を選択する。
+***
+*******************************************************************/
+
 package ConnectFour.Screen.SelectModeScreen;
 
 import ConnectFour.Screen.OriginScreen;
@@ -11,6 +19,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class SelectModeScreen extends OriginScreen {
+	
+	/****************************************************************************
+	*** Method Name         : SelectModeScreen()
+	*** Designer            : 新井田　俊輔
+	*** Date                : 2023.07.18
+	*** Function            : テキストに基づいた２つのボタンを表示させる。
+	                          またそのボタンを選択することが可能にする。
+	*** Return              : 選択したプレイ人数
+	****************************************************************************/
+	
 	public SelectModeScreen() {
 		//複数のNodeを盾に結合できるVBoxを生成
 		VBox vb = new VBox();

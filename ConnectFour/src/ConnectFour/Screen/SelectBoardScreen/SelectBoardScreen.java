@@ -1,3 +1,11 @@
+/*******************************************************************
+*** File Name            : SelectBoardScreen.java
+*** Designer             : 新井田　俊輔
+*** Date                 : 2023.07.18
+*** Purpose              : プレイする盤面の大きさを選択する。
+***
+*******************************************************************/
+
 package ConnectFour.Screen.SelectBoardScreen;
 
 import ConnectFour.Screen.OriginScreen;
@@ -17,7 +25,16 @@ public class SelectBoardScreen extends OriginScreen {
 	private boolean online;
 	private TextField columnTF;
 	private TextField rowTF;
-
+	
+	/****************************************************************************
+	*** Method Name         : SelectBoardScreen(boolean online)
+	*** Designer            : 新井田　俊輔
+	*** Date                : 2023.07.18
+	*** Function            : テキストに基づいた3つのボタンを表示させる。
+	                          またそのボタンを選択することが可能にする。
+	*** Return              : 選択した盤面の大きさ
+	****************************************************************************/
+	
 	public SelectBoardScreen(boolean online) {
 		this.online = online;
 		//複数のNodeを横に結合できるVBoxを生成
