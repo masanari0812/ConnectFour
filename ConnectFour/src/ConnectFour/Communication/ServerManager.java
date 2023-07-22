@@ -25,11 +25,28 @@ public class ServerManager extends Thread {
 	private PlayGameScreen pgs;
 	private int num = 0;
 
+	/****************************************************************************
+	*** Method Name         : ServerManager(PlayGameScreen pgs)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : PlayGameScreen連携
+	****************************************************************************/
 	public ServerManager(PlayGameScreen pgs) {
 		this.pgs = pgs;
 		pgs.setOnlineMgr(this);
 	}
 
+	/****************************************************************************
+	*** Method Name         : run()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : LAN内にLocalIPの情報を含めたパケット送信
+							  クライアント側からの接続待機処理
+							  クライアントへの接続処理
+							  通信終了処理
+							  ClientManagerインスタンスの生成
+	*** Return              : void
+	****************************************************************************/
 	@Override
 	public void run() {
 		try {
