@@ -6,7 +6,6 @@
 ***
 *******************************************************************/
 
-
 package ConnectFour.Screen.PlayGameScreen;
 
 import java.io.IOException;
@@ -57,15 +56,14 @@ public class PlayGameScreen extends OriginScreen {
 	private TextField chatBox;
 	private CommunicationThread ct;
 
-	
 	/****************************************************************************
 	*** Method Name         : PlayGameScreen()
 	*** Designer            : 塚田 大貴
-    *** Date                : 2023.07.22
+	*** Date                : 2023.07.22
 	*** Function            : 盤面の行数と列数をコンストラクタで取得する
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
 		this.column = column;
@@ -95,8 +93,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 盤面生成処理
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void makeBoard() {
 		System.out.println("d");
 		if (online) {
@@ -144,8 +142,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : x列の一番下のマスを染める
 	*** Return              : PlayerAffiliation.NONE
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// x 列の一番下のマスを染める
 	public PlayerAffiliation putOnSpace(PlayerAffiliation player, int x) { // x: 列の場所 0 to 6
 		if (boardState.get(x).size() <= row) {
@@ -153,7 +151,7 @@ public class PlayGameScreen extends OriginScreen {
 		}
 		return PlayerAffiliation.NONE;
 	}
-	
+
 	/****************************************************************************
 	*** Method Name         : getSpace(int x, int y)
 	*** Designer            : 塚田 大貴
@@ -176,8 +174,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : x列，y行目のマスをplayerの色で染め，盤面を更新
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// x 列 y 行目のマスをplayerの色で染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x, int y) {
 		if (player == PlayerAffiliation.NONE)
@@ -186,7 +184,7 @@ public class PlayGameScreen extends OriginScreen {
 		boardState.get(x).add(y, player); // y: 追加する場所  player: 追加する値
 		reloadBoard();
 	}
-	
+
 	/****************************************************************************
 	*** Method Name         : setSpace(PlayerAffiliation player, int x)
 	*** Designer            : 塚田 大貴
@@ -263,8 +261,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : スキルの処理(青色のマスで層を作る)
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// スキルの処理(青色のマスで層を作る)
 	public void activateSkill() {
 		if (online) {
@@ -293,8 +291,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 盤面の生成・更新，イベントハンドラの登録を行う
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// 盤面の生成・更新，イベントハンドラの登録(マウス，ボタン)
 	// used_skill が 2 の場合，ボタンは生成しない
 	public void reloadBoard() {
@@ -324,7 +322,8 @@ public class PlayGameScreen extends OriginScreen {
 			Button bt = new Button("Skill");
 			bt.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			bt.setOnMousePressed(event -> {
-				activateSkill();
+				if (!judgeWin())
+					activateSkill();
 			});
 			sideBar.getChildren().add(bt);
 		}
@@ -339,8 +338,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : x列の要素数を返す
 	*** Return              : boardState.get(x).size() x列の要素数
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// x 列の要素数を返す
 	public int getFirstNoneSpace(int x) {
 		return boardState.get(x).size();
@@ -352,8 +351,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 各列で4マス続けて揃っているかを確認する
 	*** Return              : point
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// 盤面の把握 列の確認
 	public int countColumnSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -380,7 +379,7 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 各行で4マス続けて揃っているかを確認する
 	*** Return              : point
-	****************************************************************************/	
+	****************************************************************************/
 
 	// 行の確認
 	public int countRowSpace(PlayerAffiliation team) {
@@ -408,8 +407,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 右斜めのマスで4マス続けて揃っているかを確認する
 	*** Return              : point
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// 斜めの確認1
 	public int countRightSlashSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -436,8 +435,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 左斜めのマスで4マス続けて揃っているかを確認する
 	*** Return              : point
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	// 斜めの確認2
 	public int countLeftSlashSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -464,8 +463,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : ホスト情報を代入
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void setHost(boolean host) {
 		this.host = host;
 	}
@@ -477,8 +476,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Function            : 接続状況の取得
 	*** Return              : true:  online
 							  false: offline
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public boolean getOnline() {
 		return online;
 	}
@@ -489,8 +488,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 通信入力用のストリームを代入
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void setObjectInputStream(InputStream is) throws IOException {
 		this.ois = new ObjectInputStream(is);
 
@@ -502,8 +501,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 通信出力用のストリームを代入
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void setObjectOutputStream(OutputStream os) throws IOException {
 		this.oos = new ObjectOutputStream(os);
 	}
@@ -514,8 +513,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 通信用のスレッドを代入
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void setOnlineMgr(Thread t) {
 		this.onlineMgr = t;
 	}
@@ -526,8 +525,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : プレイヤーもしくはコンピュータのターンを変える処理
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void changeTurn() {
 		switch (turn) {
 		case PLAYER1:
@@ -550,8 +549,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Function            : 試合が終了したから確認する処理
 	*** Return              : true:  finish
 							  false: continue
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public boolean judgeWin() {
 		if (countRowSpace(turn) > 0 || countColumnSpace(turn) > 0 || countRightSlashSpace(turn) > 0
 				|| countLeftSlashSpace(turn) > 0)
@@ -565,8 +564,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : コンピュータがマスをセットする処理
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void setComTrout() {
 		Random rand = new Random();
 		int x = rand.nextInt(column);
@@ -576,13 +575,10 @@ public class PlayGameScreen extends OriginScreen {
 		setSpace(PlayerAffiliation.PLAYER2, x);
 	}
 
-
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
 		private int x;
 
-
-		
 		public ClickBoardEventHandler(int x) {
 			this.x = x;
 		}
@@ -593,8 +589,8 @@ public class PlayGameScreen extends OriginScreen {
 		*** Date                : 2023.07.22
 		*** Function            : マウスでマスをクリックしたら赤or黄色に染まる処理
 		*** Return              : void
-		****************************************************************************/	
-		
+		****************************************************************************/
+
 		@Override
 		public void handle(MouseEvent e) {
 			if (online) {
@@ -620,8 +616,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Date                : 2023.07.22
 	*** Function            : 通信送信処理
 	*** Return              : void
-	****************************************************************************/	
-	
+	****************************************************************************/
+
 	public void sendCommunicationObject(CommunicationObject co) {
 		try {
 			oos.writeObject(co);
@@ -629,8 +625,7 @@ public class PlayGameScreen extends OriginScreen {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}	
-
+	}
 
 	public class CommunicationThread extends Thread {
 		@Override
@@ -640,7 +635,7 @@ public class PlayGameScreen extends OriginScreen {
 		*** Date                : 2023.07.22
 		*** Function            : 通信受信処理
 		*** Return              : void
-		****************************************************************************/	
+		****************************************************************************/
 		public void run() {
 			while (online) {
 				try {
