@@ -37,17 +37,15 @@ public class SelectBoardScreen extends OriginScreen {
 	
 	public SelectBoardScreen(boolean online) {
 		this.online = online;
+		
 		//複数のNodeを横に結合できるVBoxを生成
 		VBox vb = new VBox();
-		//vb内で中央位置に合わせる。
 		vb.setAlignment(Pos.CENTER);
-		//(ButtonやTextなどの)Nodeの感覚を20pxに設定する。
 		vb.setSpacing(20);
 		
+		//Textに表示する文字列(盤面の大きさ）の作成
 		int column, row;
-		//1から5までのテキストを作りClickButtonイベントを設定する。
 		for (int i = 1; i <= 3; i++) {
-			//Textに表示する文字列(盤面の大きさ）の作成
 			switch (i) {
 			case 1:
 				column = 7;
@@ -65,19 +63,17 @@ public class SelectBoardScreen extends OriginScreen {
 				column = -1;
 				row = -1;
 			}
-			//Textインスタンス生成
+			
+			//Textインスタンスを生成し、インスタンスをクリックした時のイベントを設定
 			Button bt = new Button(String.valueOf(column) + "×" + String.valueOf(row));
-			//作成したインスタンスにクリックしたときのイベントを設定
 			bt.setOnMouseClicked(new ClickButton(column, row));
 			bt.setPrefSize(300, 80);
 			bt.setFont(new Font(25));
-			//VBoxに作成したNodeを追加(Textインスタンス)
 			vb.getChildren().add(bt);
+			
 		}
-		
-		/*作成したVBoxをもとにSceneインスタンスを生成
-		//代入先はこのクラスの継承元OriginScreenのメンバ変数scene */
 
+		//選んだテキストを表示
 		HBox size = new HBox();
 		size.setAlignment(Pos.CENTER);
 		this.columnTF = new TextField();
@@ -86,6 +82,8 @@ public class SelectBoardScreen extends OriginScreen {
 		rowTF.setEditable(false);
 		Text midText = new Text("×");
 		size.getChildren().addAll(columnTF, midText, rowTF);
+		
+		//STARTボタンの表示
 		Button start = new Button("START");
 		start.setPrefSize(300, 80);
 		start.setOnMousePressed(new ClickStart());
@@ -108,8 +106,6 @@ public class SelectBoardScreen extends OriginScreen {
 		//イベント発生時の処理
 		@Override
 		public void handle(MouseEvent e) {
-			//TextFieldに表示する文字列(盤面の大きさ)の作成
-			//TextFieldの文字列の変更処理
 			columnTF.setText(String.valueOf(column));
 			rowTF.setText(String.valueOf(row));
 		}
