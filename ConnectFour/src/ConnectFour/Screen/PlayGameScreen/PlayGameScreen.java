@@ -93,8 +93,9 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : makeBoard()
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 盤面生成処理
+	
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void makeBoard() {
@@ -459,27 +460,11 @@ public class PlayGameScreen extends OriginScreen {
 	}
 
 	/****************************************************************************
-	*** Method Name         : breakSpace(int x, int y)
-	*** Designer            : 塚田 大貴
-	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
-	****************************************************************************/	
-	
-	public boolean breakSpace(int x, int y) {
-		if (getSpace(x, y).equals(PlayerAffiliation.NONE)) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/****************************************************************************
 	*** Method Name         : setHost(boolean host)
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : ホスト情報を代入
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void setHost(boolean host) {
@@ -490,8 +475,9 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : getOnline()
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 接続状況の取得
+	*** Return              : true:  online
+							  false: offline
 	****************************************************************************/	
 	
 	public boolean getOnline() {
@@ -502,8 +488,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : setObjectInputStream(InputStream is)
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 通信入力用のストリームを代入
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void setObjectInputStream(InputStream is) throws IOException {
@@ -515,8 +501,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : setObjectOutputStream(OutputStream os)
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              :
+	*** Function            : 通信出力用のストリームを代入
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void setObjectOutputStream(OutputStream os) throws IOException {
@@ -527,8 +513,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : setOnlineMgr(Thread t)
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              :
+	*** Function            : 通信用のスレッドを代入
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void setOnlineMgr(Thread t) {
@@ -539,8 +525,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : changeTurn()
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              :
+	*** Function            : プレイヤーもしくはコンピュータのターンを変える処理
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void changeTurn() {
@@ -562,8 +548,9 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : judgeWin()
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              :
+	*** Function            : 試合が終了したから確認する処理
+	*** Return              : true:  finish
+							  false: continue
 	****************************************************************************/	
 	
 	public boolean judgeWin() {
@@ -577,8 +564,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : setComTrout()
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              :
+	*** Function            : コンピュータがマスをセットする処理
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void setComTrout() {
@@ -590,22 +577,25 @@ public class PlayGameScreen extends OriginScreen {
 		setSpace(PlayerAffiliation.PLAYER2, x);
 	}
 
-	/****************************************************************************
-	*** Method Name         : ClickBoardEventHandler()
-	*** Designer            : 塚田 大貴
-	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              :
-	****************************************************************************/	
-	
+
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
 		private int x;
 
+
+		
 		public ClickBoardEventHandler(int x) {
 			this.x = x;
 		}
 
+		/****************************************************************************
+		*** Method Name         : ClickBoardEventHandler()
+		*** Designer            : 塚田 大貴
+		*** Date                : 2023.07.22
+		*** Function            : マウスでマスをクリックしたら赤or黄色に染まる処理
+		*** Return              : void
+		****************************************************************************/	
+		
 		@Override
 		public void handle(MouseEvent e) {
 			if (online) {
@@ -630,8 +620,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : sendCommunicationObject(CommunicationObject co)
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              :
+	*** Function            : 通信送信処理
+	*** Return              : void
 	****************************************************************************/	
 	
 	public void sendCommunicationObject(CommunicationObject co) {
@@ -643,16 +633,16 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}	
 
-	/****************************************************************************
-	*** Method Name         : run()
-	*** Designer            : 玉木 将成
-	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              : 
-	****************************************************************************/	
-	
+
 	public class CommunicationThread extends Thread {
 		@Override
+		/****************************************************************************
+		*** Method Name         : run()
+		*** Designer            : 玉木 将成
+		*** Date                : 2023.07.22
+		*** Function            : 通信受信処理
+		*** Return              : void
+		****************************************************************************/	
 		public void run() {
 			while (online) {
 				try {
