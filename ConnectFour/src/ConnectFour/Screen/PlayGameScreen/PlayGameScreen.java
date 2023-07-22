@@ -1,12 +1,3 @@
-/*******************************************************************
-*** File Name             : PlayGameScreen.java
-*** Designer              : 塚田 大貴，玉木 将成
-*** Date                  : 2023.07.22
-*** Purpose               : ゲームの進行処理を記述する
-***
-*******************************************************************/
-
-
 package ConnectFour.Screen.PlayGameScreen;
 
 import java.io.IOException;
@@ -57,17 +48,6 @@ public class PlayGameScreen extends OriginScreen {
 	private TextField chatBox;
 	private CommunicationThread ct;
 
-	
-	/****************************************************************************
-	*** Method Name         : ccdCalcSum()
-	*** Designer            : 芝浦 太郎
-	*** Date                : 1996.07.12
-	*** Function            : シミュレーションデータの計算を行う。
-	                          また、異常データの検出も行う。
-	*** Return              : -1 データ異常
-	                          0 以上  データ計算結果
-	****************************************************************************/	
-	
 	// columnとrowをコンストラクタで取得
 	public PlayGameScreen(boolean online, int column, int row) {
 		this.column = column;
@@ -102,16 +82,6 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}
 
-	/****************************************************************************
-	*** Method Name         : ccdCalcSum()
-	*** Designer            : 芝浦 太郎
-	*** Date                : 1996.07.12
-	*** Function            : シミュレーションデータの計算を行う。
-	                          また、異常データの検出も行う。
-	*** Return              : -1 データ異常
-	                          0 以上  データ計算結果
-	****************************************************************************/	
-	
 	public void makeBoard() {
 		System.out.println("d");
 		if (online) {
