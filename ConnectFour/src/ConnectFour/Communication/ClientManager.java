@@ -1,3 +1,11 @@
+/*******************************************************************
+*** File Name             : ClientManager.java
+*** Designer              : 玉木 将成
+*** Date                 : 2023.07.10
+*** Purpose              : クライアント接続処理
+***
+*******************************************************************/
+
 package ConnectFour.Communication;
 
 import java.io.IOException;
@@ -9,17 +17,36 @@ import java.net.Socket;
 import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
 import javafx.application.Platform;
 
+
+
 public class ClientManager extends Thread {
 	private DatagramSocket handShakeSocket;
 	private Socket socket;
 	private PlayGameScreen pgs;
 	private int num = 0;
+	
+	/****************************************************************************
+	*** Method Name         : ClientManager(PlayGameScreen pgs)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : PlayGameScreen連携
+	****************************************************************************/
 
 	public ClientManager(PlayGameScreen pgs) {
 		this.pgs = pgs;
 		pgs.setOnlineMgr(this);
 	}
 
+	
+	/****************************************************************************
+	*** Method Name         : run()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : サーバ側からのブロードキャストパケットを受信待機
+							  サーバ側への接続処理
+							  通信終了処理
+	*** Return              : void
+	****************************************************************************/
 	@Override
 	public void run() {
 		try {
