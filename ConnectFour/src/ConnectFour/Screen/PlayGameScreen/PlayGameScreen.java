@@ -59,13 +59,11 @@ public class PlayGameScreen extends OriginScreen {
 
 	
 	/****************************************************************************
-	*** Method Name         : ccdCalcSum()
-	*** Designer            : 芝浦 太郎
-	*** Date                : 1996.07.12
-	*** Function            : シミュレーションデータの計算を行う。
-	                          また、異常データの検出も行う。
-	*** Return              : -1 データ異常
-	                          0 以上  データ計算結果
+	*** Method Name         : PlayGameScreen()
+	*** Designer            : 塚田 大貴
+    *** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
 	****************************************************************************/	
 	
 	// columnとrowをコンストラクタで取得
@@ -79,17 +77,6 @@ public class PlayGameScreen extends OriginScreen {
 		this.turn = PlayerAffiliation.PLAYER1;
 
 		if (online) {
-			/*
-			Button stopBT = new Button("Stop Matching");
-			stopBT.setFont(new Font(20));
-			stopBT.setOnMousePressed(event -> {
-				this.online=false;
-				if (onlineMgr != null)
-					onlineMgr.interrupt();
-				changeNextScreen(new SelectModeScreen());
-			})
-			bp.setBottom(stopBT);
-			*/
 			Text text = new Text("Matching now");
 			text.setFont(new Font(30));
 			BorderPane bp = new BorderPane();
@@ -103,13 +90,11 @@ public class PlayGameScreen extends OriginScreen {
 	}
 
 	/****************************************************************************
-	*** Method Name         : ccdCalcSum()
-	*** Designer            : 芝浦 太郎
-	*** Date                : 1996.07.12
-	*** Function            : シミュレーションデータの計算を行う。
-	                          また、異常データの検出も行う。
-	*** Return              : -1 データ異常
-	                          0 以上  データ計算結果
+	*** Method Name         : makeBoard()
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
 	****************************************************************************/	
 	
 	public void makeBoard() {
@@ -153,6 +138,14 @@ public class PlayGameScreen extends OriginScreen {
 
 	}
 
+	/****************************************************************************
+	*** Method Name         : putOnSpace(PlayerAffiliation player, int x)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	// x 列の一番下のマスを染める
 	public PlayerAffiliation putOnSpace(PlayerAffiliation player, int x) { // x: 列の場所 0 to 6
 		if (boardState.get(x).size() <= row) {
@@ -160,6 +153,14 @@ public class PlayGameScreen extends OriginScreen {
 		}
 		return PlayerAffiliation.NONE;
 	}
+	
+	/****************************************************************************
+	*** Method Name         : getSpace(int x, int y)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              :
+	****************************************************************************/
 
 	// 特定のマスを返り値として返す
 	public PlayerAffiliation getSpace(int x, int y) {
@@ -169,6 +170,14 @@ public class PlayGameScreen extends OriginScreen {
 		return boardState.get(x).get(y);
 	}
 
+	/****************************************************************************
+	*** Method Name         : setSpace(PlayerAffiliation player, int x, int y)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	// x 列 y 行目のマスをplayerの色で染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x, int y) {
 		if (player == PlayerAffiliation.NONE)
@@ -177,6 +186,14 @@ public class PlayGameScreen extends OriginScreen {
 		boardState.get(x).add(y, player); // y: 追加する場所  player: 追加する値
 		reloadBoard();
 	}
+	
+	/****************************************************************************
+	*** Method Name         : setSpace(PlayerAffiliation player, int x)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/
 
 	// x 列の一番下のマスを染め，盤面を更新
 	public void setSpace(PlayerAffiliation player, int x) {
@@ -240,6 +257,14 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}
 
+	/****************************************************************************
+	*** Method Name         : activateSkill()
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	// スキルの処理(青色のマスで層を作る)
 	public void activateSkill() {
 		if (online) {
@@ -262,6 +287,14 @@ public class PlayGameScreen extends OriginScreen {
 		reloadBoard();
 	}
 
+	/****************************************************************************
+	*** Method Name         : reloadBoard()
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	// 盤面の生成・更新，イベントハンドラの登録(マウス，ボタン)
 	// used_skill が 2 の場合，ボタンは生成しない
 	public void reloadBoard() {
@@ -300,11 +333,27 @@ public class PlayGameScreen extends OriginScreen {
 		ConnectFour.getStage().setScene(scene);
 	}
 
+	/****************************************************************************
+	*** Method Name         : getFirstNoneSpace(int x)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              :
+	****************************************************************************/	
+	
 	// x 列の要素数を返す
 	public int getFirstNoneSpace(int x) {
 		return boardState.get(x).size();
 	}
 
+	/****************************************************************************
+	*** Method Name         : countColumnSpace(PlayerAffiliation team)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	// 盤面の把握 列の確認
 	public int countColumnSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -324,6 +373,14 @@ public class PlayGameScreen extends OriginScreen {
 		}
 		return point;
 	}
+
+	/****************************************************************************
+	*** Method Name         : countRowSpace(PlayerAffiliation team)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
 
 	// 行の確認
 	public int countRowSpace(PlayerAffiliation team) {
@@ -345,6 +402,14 @@ public class PlayGameScreen extends OriginScreen {
 		return point;
 	}
 
+	/****************************************************************************
+	*** Method Name         : countRightSlashSpace(PlayerAffiliation team)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              :
+	****************************************************************************/	
+	
 	// 斜めの確認1
 	public int countRightSlashSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -365,6 +430,14 @@ public class PlayGameScreen extends OriginScreen {
 		return point;
 	}
 
+	/****************************************************************************
+	*** Method Name         : countLeftSlashSpace(PlayerAffiliation team)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              : 
+	****************************************************************************/	
+	
 	// 斜めの確認2
 	public int countLeftSlashSpace(PlayerAffiliation team) {
 		int count, point = 0;
@@ -385,6 +458,14 @@ public class PlayGameScreen extends OriginScreen {
 		return point;
 	}
 
+	/****************************************************************************
+	*** Method Name         : breakSpace(int x, int y)
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	public boolean breakSpace(int x, int y) {
 		if (getSpace(x, y).equals(PlayerAffiliation.NONE)) {
 			return false;
@@ -393,27 +474,75 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}
 
+	/****************************************************************************
+	*** Method Name         : setHost(boolean host)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	public void setHost(boolean host) {
 		this.host = host;
 	}
 
+	/****************************************************************************
+	*** Method Name         : getOnline()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	public boolean getOnline() {
 		return online;
 	}
 
+	/****************************************************************************
+	*** Method Name         : setObjectInputStream(InputStream is)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              : 
+	****************************************************************************/	
+	
 	public void setObjectInputStream(InputStream is) throws IOException {
 		this.ois = new ObjectInputStream(is);
 
 	}
 
+	/****************************************************************************
+	*** Method Name         : setObjectOutputStream(OutputStream os)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              :
+	****************************************************************************/	
+	
 	public void setObjectOutputStream(OutputStream os) throws IOException {
 		this.oos = new ObjectOutputStream(os);
 	}
 
+	/****************************************************************************
+	*** Method Name         : setOnlineMgr(Thread t)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              :
+	****************************************************************************/	
+	
 	public void setOnlineMgr(Thread t) {
 		this.onlineMgr = t;
 	}
 
+	/****************************************************************************
+	*** Method Name         : changeTurn()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              :
+	****************************************************************************/	
+	
 	public void changeTurn() {
 		switch (turn) {
 		case PLAYER1:
@@ -429,6 +558,14 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}
 
+	/****************************************************************************
+	*** Method Name         : judgeWin()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              :
+	****************************************************************************/	
+	
 	public boolean judgeWin() {
 		if (countRowSpace(turn) > 0 || countColumnSpace(turn) > 0 || countRightSlashSpace(turn) > 0
 				|| countLeftSlashSpace(turn) > 0)
@@ -436,6 +573,14 @@ public class PlayGameScreen extends OriginScreen {
 		return false;
 	}
 
+	/****************************************************************************
+	*** Method Name         : setComTrout()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            : 
+	*** Return              :
+	****************************************************************************/	
+	
 	public void setComTrout() {
 		Random rand = new Random();
 		int x = rand.nextInt(column);
@@ -445,15 +590,17 @@ public class PlayGameScreen extends OriginScreen {
 		setSpace(PlayerAffiliation.PLAYER2, x);
 	}
 
+	/****************************************************************************
+	*** Method Name         : ClickBoardEventHandler()
+	*** Designer            : 塚田 大貴
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              :
+	****************************************************************************/	
+	
 	// マウスでマスをクリックしたら赤or黄色に染まる処理
 	class ClickBoardEventHandler implements EventHandler<MouseEvent> {
 		private int x;
-		private int y;
-
-		public ClickBoardEventHandler(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
 
 		public ClickBoardEventHandler(int x) {
 			this.x = x;
@@ -479,6 +626,14 @@ public class PlayGameScreen extends OriginScreen {
 		}
 	}
 
+	/****************************************************************************
+	*** Method Name         : sendCommunicationObject(CommunicationObject co)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              :
+	****************************************************************************/	
+	
 	public void sendCommunicationObject(CommunicationObject co) {
 		try {
 			oos.writeObject(co);
@@ -486,8 +641,16 @@ public class PlayGameScreen extends OriginScreen {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}	
 
+	/****************************************************************************
+	*** Method Name         : run()
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.22
+	*** Function            :
+	*** Return              : 
+	****************************************************************************/	
+	
 	public class CommunicationThread extends Thread {
 		@Override
 		public void run() {
