@@ -62,8 +62,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : PlayGameScreen()
 	*** Designer            : 塚田 大貴
     *** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 盤面の行数と列数をコンストラクタで取得する
+	*** Return              : void
 	****************************************************************************/	
 	
 	// columnとrowをコンストラクタで取得
@@ -94,7 +94,6 @@ public class PlayGameScreen extends OriginScreen {
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
 	*** Function            : 盤面生成処理
-	
 	*** Return              : void
 	****************************************************************************/	
 	
@@ -143,8 +142,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : putOnSpace(PlayerAffiliation player, int x)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : x列の一番下のマスを染める
+	*** Return              : PlayerAffiliation.NONE
 	****************************************************************************/	
 	
 	// x 列の一番下のマスを染める
@@ -159,8 +158,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : getSpace(int x, int y)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              :
+	*** Function            : 特定のマスを返り値として返す
+	*** Return              : boardState.get(x).get(y) x列y行のマス
 	****************************************************************************/
 
 	// 特定のマスを返り値として返す
@@ -175,8 +174,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : setSpace(PlayerAffiliation player, int x, int y)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : x列，y行目のマスをplayerの色で染め，盤面を更新
+	*** Return              : void
 	****************************************************************************/	
 	
 	// x 列 y 行目のマスをplayerの色で染め，盤面を更新
@@ -192,8 +191,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : setSpace(PlayerAffiliation player, int x)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : x列の一番下のマスを染め，盤面を更新
+	*** Return              : void
 	****************************************************************************/
 
 	// x 列の一番下のマスを染め，盤面を更新
@@ -262,8 +261,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : activateSkill()
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : スキルの処理(青色のマスで層を作る)
+	*** Return              : void
 	****************************************************************************/	
 	
 	// スキルの処理(青色のマスで層を作る)
@@ -292,8 +291,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : reloadBoard()
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 盤面の生成・更新，イベントハンドラの登録を行う
+	*** Return              : void
 	****************************************************************************/	
 	
 	// 盤面の生成・更新，イベントハンドラの登録(マウス，ボタン)
@@ -338,8 +337,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : getFirstNoneSpace(int x)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              :
+	*** Function            : x列の要素数を返す
+	*** Return              : boardState.get(x).size() x列の要素数
 	****************************************************************************/	
 	
 	// x 列の要素数を返す
@@ -351,8 +350,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : countColumnSpace(PlayerAffiliation team)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 各列で4マス続けて揃っているかを確認する
+	*** Return              : point
 	****************************************************************************/	
 	
 	// 盤面の把握 列の確認
@@ -379,8 +378,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : countRowSpace(PlayerAffiliation team)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              : 
+	*** Function            : 各行で4マス続けて揃っているかを確認する
+	*** Return              : point
 	****************************************************************************/	
 
 	// 行の確認
@@ -407,8 +406,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : countRightSlashSpace(PlayerAffiliation team)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            : 
-	*** Return              :
+	*** Function            : 右斜めのマスで4マス続けて揃っているかを確認する
+	*** Return              : point
 	****************************************************************************/	
 	
 	// 斜めの確認1
@@ -435,8 +434,8 @@ public class PlayGameScreen extends OriginScreen {
 	*** Method Name         : countLeftSlashSpace(PlayerAffiliation team)
 	*** Designer            : 塚田 大貴
 	*** Date                : 2023.07.22
-	*** Function            :
-	*** Return              : 
+	*** Function            : 左斜めのマスで4マス続けて揃っているかを確認する
+	*** Return              : point
 	****************************************************************************/	
 	
 	// 斜めの確認2
