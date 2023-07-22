@@ -1,3 +1,12 @@
+/*******************************************************************
+*** File Name            : ConnectFour.java
+*** Designer             : 玉木 将成
+*** Date                 : 2023.07.10
+*** Purpose              : UI処理
+***						   起動処理
+***
+*******************************************************************/
+
 package ConnectFour;
 
 import ConnectFour.Screen.PlayGameScreen.PlayGameScreen;
@@ -13,10 +22,23 @@ import javafx.stage.Stage;
 public class ConnectFour extends Application {
 	private static Stage stage;
 
+	/****************************************************************************
+	*** Method Name         : main(String[] args)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : JavaFX起動処理
+	****************************************************************************/
 	public static void main(String[] args) {
 		launch(args);
 	}
-
+	
+	/****************************************************************************
+	*** Method Name         : main(String[] args)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : ウィンドウ生成
+							  SelectModeScreen切替
+	****************************************************************************/
 	@Override
 	public void start(Stage stage) throws Exception {
 		setStage(stage);
@@ -38,15 +60,30 @@ public class ConnectFour extends Application {
 		stage.setTitle("ConnectFour");
 		stage.show();
 	}
-
+	/****************************************************************************
+	*** Method Name         : setScene(Scene scene)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : Scene切替
+	****************************************************************************/
 	public static void setScene(Scene scene) {
 		getStage().setScene(scene);
 	}
-
+	/****************************************************************************
+	*** Method Name         : setScene(Scene scene)
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : stage切替
+	****************************************************************************/
 	public static void setStage(Stage stage) {
 		ConnectFour.stage = stage;
 	}
-
+	/****************************************************************************
+	*** Method Name         : getStage() 
+	*** Designer            : 玉木 将成
+	*** Date                : 2023.07.10
+	*** Function            : stage取得
+	****************************************************************************/
 	public static Stage getStage() {
 		return ConnectFour.stage;
 	}

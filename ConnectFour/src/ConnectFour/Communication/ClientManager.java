@@ -1,6 +1,6 @@
 /*******************************************************************
-*** File Name             : ClientManager.java
-*** Designer              : 玉木 将成
+*** File Name            : ClientManager.java
+*** Designer             : 玉木 将成
 *** Date                 : 2023.07.10
 *** Purpose              : クライアント接続処理
 ***

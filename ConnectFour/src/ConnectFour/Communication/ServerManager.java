@@ -1,6 +1,6 @@
 /*******************************************************************
-*** File Name             : ServerManager.java
-*** Designer              : 玉木 将成
+*** File Name            : ServerManager.java
+*** Designer             : 玉木 将成
 *** Date                 : 2023.07.10
 *** Purpose              : サーバー接続処理
 ***
