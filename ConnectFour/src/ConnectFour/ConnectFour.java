@@ -27,6 +27,7 @@ public class ConnectFour extends Application {
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.10
 	*** Function            : JavaFX起動処理
+	*** Return              : void
 	****************************************************************************/
 	public static void main(String[] args) {
 		launch(args);
@@ -38,6 +39,7 @@ public class ConnectFour extends Application {
 	*** Date                : 2023.07.10
 	*** Function            : ウィンドウ生成
 							  SelectModeScreen切替
+	*** Return              : void
 	****************************************************************************/
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -65,6 +67,7 @@ public class ConnectFour extends Application {
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.10
 	*** Function            : Scene切替
+	*** Return              : void
 	****************************************************************************/
 	public static void setScene(Scene scene) {
 		getStage().setScene(scene);
@@ -74,6 +77,7 @@ public class ConnectFour extends Application {
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.10
 	*** Function            : stage切替
+	*** Return              : void
 	****************************************************************************/
 	public static void setStage(Stage stage) {
 		ConnectFour.stage = stage;
@@ -83,6 +87,7 @@ public class ConnectFour extends Application {
 	*** Designer            : 玉木 将成
 	*** Date                : 2023.07.10
 	*** Function            : stage取得
+	*** Return              : Stage
 	****************************************************************************/
 	public static Stage getStage() {
 		return ConnectFour.stage;

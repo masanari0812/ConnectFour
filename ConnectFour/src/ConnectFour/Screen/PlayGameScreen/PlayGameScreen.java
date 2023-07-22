@@ -608,7 +608,6 @@ public class PlayGameScreen extends OriginScreen {
 						setSpace(PlayerAffiliation.PLAYER2, x);
 					}
 				}
-
 			} else if (e.isPrimaryButtonDown() && getFirstNoneSpace(x) != row) {
 				setSpace(PlayerAffiliation.PLAYER1, x);
 			}
